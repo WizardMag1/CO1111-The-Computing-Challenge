@@ -1,0 +1,14 @@
+# Workflow reminders & scratch notes
+reminder.txt
+REMINDER.md
+notes-scratch.txt
+
+# IDE & Editor folders
+.idea/
+.vscode/
+
+# OS and log files
+*.log
+.DS_Store
+Thumbs.db
+desktop.ini

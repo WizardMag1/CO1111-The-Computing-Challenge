@@ -3,9 +3,244 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>CyberQuest — Real-Time Treasure Hunt Web App</title>
+  <meta name="description" content="CyberQuest is an interactive, location-based mobile treasure hunt web application created for the CO1111 Computing Challenge at UCLan Cyprus.">
+  <meta name="keywords" content="Treasure Hunt, UCLan Cyprus, CO1111, Web Development, Geolocation, Code Cyprus">
+  <meta name="author" content="WizardMag1, Alex A">
+
+  <!-- OpenGraph Metadata -->
+  <meta property="og:title" content="CyberQuest — Real-Time Treasure Hunt Web App">
+  <meta property="og:description" content="Explore campus, solve clues, and climb the live leaderboard in our interactive mobile treasure hunt.">
+  <meta property="og:type" content="website">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <p>Hi</p>
+
+  <!-- 1. Header & Navigation -->
+  <header class="site_header">
+    <div class="nav_container">
+      <div class="logo_group">
+        <span class="logo_badge">CQ</span>
+        <span class="logo_title">CyberQuest</span>
+        <span class="badge_cyan">CO1111</span>
+      </div>
+      <nav class="nav_menu">
+        <ul class="nav_list">
+          <li><a href="#about">About</a></li>
+          <li><a href="#how_it_works">Gameplay</a></li>
+          <li><a href="#team">Team</a></li>
+          <li><a href="#marketing">Marketing</a></li>
+          <li><a href="test.html">Testing & UAT</a></li>
+          <li><a href="notes.html">Sprint Notes</a></li>
+          <li><a href="app.html" class="nav_cta">Play Now →</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- 2. Hero Section -->
+    <section class="hero_section">
+      <div class="hero_container">
+        <span class="badge_green">UCLan Cyprus — Computing Challenge</span>
+        <h1 class="hero_title">
+          Explore Campus & Solve Real-Time <br>
+          <span class="hero_highlight">Geospatial Treasure Hunts</span>
+        </h1>
+        <p class="hero_subtitle">
+          A high-performance mobile web application connecting to the Code Cyprus server. Navigate real-world checkpoints, answer adaptive challenges, scan QR codes, and race against other players on the live leaderboard.
+        </p>
+        <div class="hero_buttons">
+          <a href="app.html" class="btn_primary">🎮 Launch Treasure Hunt</a>
+          <a href="#about" class="btn_secondary">Read Project Brief</a>
+        </div>
+
+        <!-- Quick Metrics Strip -->
+        <div class="metrics_strip">
+          <div class="metric_item">
+            <span class="metric_value">100%</span>
+            <span class="metric_label">Web Standards</span>
+          </div>
+          <div class="metric_item">
+            <span class="metric_value">GPS</span>
+            <span class="metric_label">Location Sync</span>
+          </div>
+          <div class="metric_item">
+            <span class="metric_value">QR</span>
+            <span class="metric_label">Camera Scanner</span>
+          </div>
+          <div class="metric_item">
+            <span class="metric_value">LIVE</span>
+            <span class="metric_label">Leaderboard</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Project Overview / Scope Section -->
+    <section id="about" class="about_section">
+      <div class="container">
+        <div class="section_header">
+          <span class="badge_cyan">Project Scope</span>
+          <h2>What is CyberQuest?</h2>
+          <p class="section_lead">
+            Developed for Coursework Assessment 1 in CO1111 (The Computing Challenge) 
+            at the University of Central Lancashire (UCLan Cyprus).
+          </p>
+        </div>
+        <div class="about_grid">
+          <div class="about_text">
+            <p>
+              The challenge requires teams to engineer an interactive, mobile-optimized Web Application capable of interacting with the <strong>Code Cyprus Treasure Hunt API</strong>.
+            </p>
+            <p>
+              Unlike standard quiz applications, players must physically visit specific geographic checkpoints to unlock questions, verify coordinates, and submit answers. The server calculates score adjustments in real-time, penalizing incorrect attempts and skips while rewarding speed and accuracy.
+            </p>
+          </div>
+          <div class="about_card">
+            <h3>Technical Highlights</h3>
+            <ul class="bullet_list">
+              <li><strong>Adaptive Input Forms:</strong> Dedicated UI controls for Boolean, Multiple Choice, Numeric, and Text questions.</li>
+              <li><strong>Defensive Networking:</strong> Robust fetch requests with timeout handling and error recovery.</li>
+              <li><strong>Session Resumption:</strong> Seamless state hydration through browser <code>localStorage</code>.</li>
+              <li><strong>Progressive Web App:</strong> Mobile installability with offline asset caching.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. How It Works Section (Onboarding Guide) -->
+    <section id="how_it_works" class="gameplay_section">
+      <div class="container">
+        <div class="section_header">
+          <span class="badge_cyan">Gameplay Guide</span>
+          <h2>How to Play CyberQuest</h2>
+          <p class="section_lead">Three simple steps to compete in campus treasure hunts.</p>
+        </div>
+
+        <div class="steps_grid">
+          <div class="step_card">
+            <div class="step_number">01</div>
+            <h3>Join a Challenge</h3>
+            <p>
+              Launch the app, pick an active hunt from the Code Cyprus server, 
+              and enter your unique player nickname.
+            </p>
+          </div>
+          <div class="step_card">
+            <div class="step_number">02</div>
+            <h3>Navigate & Sync GPS</h3>
+            <p>
+              Follow the geographic clues to physical campus checkpoints. 
+              The app automatically verifies your real-time coordinates.
+            </p>
+          </div>
+          <div class="step_card">
+            <div class="step_number">03</div>
+            <h3>Solve, Scan & Score</h3>
+            <p>
+              Answer clues using tailored input controls or scan physical QR codes 
+              to score points and climb the live leaderboard.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Team Members & Roles Section -->
+    <section id="team" class="team_section">
+      <div class="container">
+        <div class="section_header">
+          <span class="badge_cyan">Development Team</span>
+          <h2>Meet the Team</h2>
+          <p class="section-lead">The active core developers behind CyberQuest.</p>
+        </div>
+
+        <div class="team_grid">
+          <!-- WizardMag1 (You) -->
+          <div class="team_card">
+            <div class="team_avatar">W</div>
+            <h3 class="team_name">WizardMag1</h3>
+            <div class="team_role">Developer B & Front-End Lead</div>
+            <p class="team-bio">
+              Responsible for the front-end architecture: authoring <code>index.html</code>, 
+              <code>app.html</code>, <code>css/styles.css</code>, page markups, PWA configuration, 
+              and GitHub repository administration.
+            </p>
+            <a href="https://github.com/WizardMag1" target="_blank" rel="noopener" class="team_link">
+              GitHub Profile →
+            </a>
+          </div>
+
+          <!-- Alex A -->
+          <div class="team_card">
+            <div class="team_avatar">A</div>
+            <h3 class="team_name">Alex A</h3>
+            <div class="team_role">Developer A & Logic Lead</div>
+            <p class="team-bio">
+              Responsible for the game logic engine: owning <code>app.js</code>, Code Cyprus 
+              REST API communication, question progression cycles, and session state persistence.
+            </p>
+            <a href="https://github.com/Godoflevels" target="_blank" rel="noopener" class="team_link">
+              GitHub Profile →
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Digital Marketing & Social Campaign -->
+    <section id="marketing" class="marketing_section">
+      <div class="container">
+        <div class="section_header">
+          <span class="badge_cyan">Digital Promotion</span>
+          <h2>Marketing & Social Campaign</h2>
+          <p class="section_lead">
+            Promoting CyberQuest to the wider university community across multiple platforms.
+          </p>
+        </div>
+
+        <div class="marketing_card">
+          <p class="marketing_intro">
+            Follow our project updates, campus play-test announcements, and development milestones:
+          </p>
+          <div class="social_links_grid">
+            <a href="https://twitter.com" target="_blank" rel="noopener" class="social_button">
+              🐦 X / Twitter (@CyberQuest26)
+            </a>
+            <a href="https://instagram.com" target="_blank" rel="noopener" class="social_button">
+              📸 Instagram (@CyberQuestApp)
+            </a>
+            <a href="https://linkedin.com" target="_blank" rel="noopener" class="social_button">
+              💼 LinkedIn Project Showcase
+            </a>
+            <a href="https://github.com/WizardMag1/CO1111-The-Computing-Challenge" target="_blank" rel="noopener" class="social_button">
+              🐙 Official GitHub Repository
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 7. Footer -->
+  <footer class="site_footer">
+    <div class="footer_container">
+      <div class="footer_info">
+        <strong>CyberQuest</strong> — CO1111 The Computing Challenge<br>
+        <span class="footer_subtext">School of Sciences, University of Central Lancashire (UCLan Cyprus)</span>
+      </div>
+      <div class="footer_links">
+        <a href="index.html">Landing</a> | 
+        <a href="app.html">App</a> | 
+        <a href="test.html">Testing</a> | 
+        <a href="notes.html">Notes</a>
+      </div>
+    </div>
+  </footer>
+
 </body>
 </html>

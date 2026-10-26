@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Testing Documentation & QA — CO1111</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .qa-container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem;
+      flex: 1;
+    }
+    .qa-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0 2rem;
+      background: var(--bg-card);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .qa-table th, .qa-table td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 0.88rem;
+    }
+    .qa-table th {
+      background: var(--bg-page);
+      color: var(--text-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+    }
+    .badge-pass {
+      display: inline-block;
+      padding: 0.2rem 0.5rem;
+      border-radius: var(--radius-full);
+      background: var(--color-success-bg);
+      color: var(--color-success);
+      font-weight: 700;
+      font-size: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Site Navigation Header -->
+  <header class="site-nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-brand">
+        <span>🏴‍☠️</span>
+        <span>Treasure Hunt</span>
+      </a>
+      <nav aria-label="QA Navigation">
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="app.html">App</a></li>
+          <li><a href="test.html" class="active">Testing</a></li>
+          <li><a href="notes.html">Notes</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="qa-container">
+    <div style="text-align: center; margin-bottom: 2.5rem;">
+      <h1 style="font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem;">Testing & Quality Assurance</h1>
+      <p style="color: var(--text-muted); max-width: 700px; margin: 0 auto;">
+        Structured verification framework for the Treasure Hunt mobile web application, covering automated unit tests, User Acceptance Testing (UAT), and Jakob Nielsen's Usability Heuristics.
+      </p>
+    </div>
+
+    <!-- Section 1: Unit Tests -->
+    <section class="card">
+      <h2 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 0.5rem;">1. Unit Tests</h2>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+        Testing pure logic functions, response parsing, and error condition simulation against the CodeCyprus Testing API (<code>/th/test-api/</code>).
+      </p>
+
+      <div style="overflow-x: auto;">
+        <table class="qa-table">
+          <thead>
+            <tr>
+              <th style="width: 80px;">Test ID</th>
+              <th>Test Case / Target Function</th>
+              <th>Input Parameters</th>
+              <th>Expected Output</th>
+              <th style="width: 90px;">Status</th>
+            </tr>
+          </thead>
+          <tbody id="unit-tests-body">
+            <tr>
+              <td><strong>UT-01</strong></td>
+              <td><code>/th/test-api/list</code> request parsing</td>
+              <td><code>number-of-ths=2</code></td>
+              <td>Returns array with exactly 2 hunt objects</td>
+              <td><span class="badge-pass">PASS</span></td>
+            </tr>
+            <tr>
+              <td><strong>UT-02</strong></td>
+              <td><code>/th/test-api/start</code> error handling</td>
+              <td><code>player=INACTIVE</code></td>
+              <td>Returns status ERROR with inactive message</td>
+              <td><span class="badge-pass">PASS</span></td>
+            </tr>
+            <tr>
+              <td><strong>UT-03</strong></td>
+              <td><code>/th/test-api/question</code> MCQ mode</td>
+              <td><code>question-type=MCQ</code></td>
+              <td>Response specifies questionType MCQ</td>
+              <td><span class="badge-pass">PASS</span></td>
+            </tr>
+            <tr>
+              <td><strong>UT-04</strong></td>
+              <td><code>/th/test-api/question</code> Boolean mode</td>
+              <td><code>question-type=BOOLEAN</code></td>
+              <td>Response specifies questionType BOOLEAN</td>
+              <td><span class="badge-pass">PASS</span></td>
+            </tr>
+            <tr>
+              <td><strong>UT-05</strong></td>
+              <td><code>/th/test-api/answer</code> correct verification</td>
+              <td><code>correct=true</code></td>
+              <td>Returns correct: true and score increment</td>
+              <td><span class="badge-pass">PASS</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Section 2: User Acceptance Testing (UAT) Plan -->
+    <section class="card" style="margin-top: 2rem;">
+      <h2 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 0.5rem;">2. User Acceptance Testing (UAT) Plan</h2>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+        Scenario-based testing matrix verifying core user journeys on desktop and mobile viewports.
+      </p>
+
+      <div style="overflow-x: auto;">
+        <table class="qa-table">
+          <thead>
+            <tr>
+              <th style="width: 70px;">ID</th>
+              <th>User Scenario</th>
+              <th>Steps</th>
+              <th>Expected Result</th>
+              <th>Actual Result</th>
+              <th style="width: 80px;">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>UAT-1</strong></td>
+              <td>View Hunt List</td>
+              <td>Open <code>app.html</code></td>
+              <td>Available hunts display with loading state</td>
+              <td>Hunts rendered in responsive cards</td>
+              <td><span class="badge-pass">PASS</span></td>
+            </tr>
+            <tr>
+              <td><strong>UAT-2</strong></td>
+              <td>Start Session</td>
+              <td>Select hunt, enter player name, click Start</td>
+              <td>Session initiates, first question loaded</td>
+              <td>Screen changes to clue view</td>
+              <td><span class="badge-pass">PASS</span></td>
+            </tr>
+            <tr>
+              <td><strong>UAT-3</strong></td>
+              <td>Answer Correctly</td>
+              <td>Enter valid answer, click submit</td>
+              <td>Score updates, positive feedback, next clue</td>
+              <td>Points added and next question rendered</td>
+              <td><span class="badge-pass">PASS</span></td>
+            </tr>
+            <tr>
+              <td><strong>UAT-4</strong></td>
+              <td>Answer Wrongly</td>
+              <td>Enter invalid answer, click submit</td>
+              <td>Penalty message displayed, stay on question</td>
+              <td>Error feedback shown in message area</td>
+              <td><span class="badge-pass">PASS</span></td>
+            </tr>
+            <tr>
+              <td><strong>UAT-5</strong></td>
+              <td>Skip Question</td>
+              <td>Click Skip button</td>
+              <td>Question bypassed, penalty applied</td>
+              <td>Next clue fetched, penalty deducted</td>
+              <td><span class="badge-pass">PASS</span></td>
+            </tr>
+            <tr>
+              <td><strong>UAT-6</strong></td>
+              <td>Reach Finish</td>
+              <td>Answer final challenge clue</td>
+              <td>Game over screen shows final score</td>
+              <td>Completion screen displayed with ranking button</td>
+              <td><span class="badge-pass">PASS</span></td>
+            </tr>
+            <tr>
+              <td><strong>UAT-7</strong></td>
+              <td>Deny Location Permission</td>
+              <td>Decline browser GPS prompt</td>
+              <td>Graceful warning toast, app does not crash</td>
+              <td>App continues running without uncaught errors</td>
+              <td><span class="badge-pass">PASS</span></td>
+            </tr>
+            <tr>
+              <td><strong>UAT-8</strong></td>
+              <td>Small Screen Responsiveness</td>
+              <td>Test on 360px mobile viewport</td>
+              <td>Buttons >= 44px, no horizontal scrollbar</td>
+              <td>Layout adjusts cleanly using Flexbox/Grid</td>
+              <td><span class="badge-pass">PASS</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Section 3: Usability Assessment (Jakob Nielsen 10 Heuristics) -->
+    <section class="card" style="margin-top: 2rem;">
+      <h2 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 0.5rem;">3. Usability Assessment (Nielsen's 10 Heuristics)</h2>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+        Formal evaluation against Jakob Nielsen's recognized heuristics for user interface design.
+      </p>
+
+      <div style="overflow-x: auto;">
+        <table class="qa-table">
+          <thead>
+            <tr>
+              <th style="width: 160px;">Heuristic Principle</th>
+              <th>Evaluation Question</th>
+              <th>Application Implementation & Findings</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>1. Visibility of system status</strong></td>
+              <td>Does the app inform users what is happening with reasonable feedback?</td>
+              <td>Loading spinner during API calls, live score counter, question progress indicator ("Clue 1 of 5").</td>
+            </tr>
+            <tr>
+              <td><strong>2. Match with real world</strong></td>
+              <td>Does the app speak the users' language with familiar phrases and concepts?</td>
+              <td>Uses clear treasure hunt terminology (Clues, Skip, Standings, QR Scan, GPS Map).</td>
+            </tr>
+            <tr>
+              <td><strong>3. User control & freedom</strong></td>
+              <td>Can users navigate back or cancel unwanted actions easily?</td>
+              <td>"Back to Hunt List" button provided on registration screen; modal dismiss triggers.</td>
+            </tr>
+            <tr>
+              <td><strong>4. Consistency & standards</strong></td>
+              <td>Are controls and terminology consistent across all views?</td>
+              <td>Standard blue primary button style, uniform 48px touch targets, unified navigation bar.</td>
+            </tr>
+            <tr>
+              <td><strong>5. Error prevention</strong></td>
+              <td>Does the design prevent users from making input errors?</td>
+              <td><code>required</code> and <code>maxlength</code> on player name; adaptive buttons for Boolean/MCQ prevent typos.</td>
+            </tr>
+            <tr>
+              <td><strong>6. Recognition over recall</strong></td>
+              <td>Are instructions and current status visible at all times?</td>
+              <td>Score and active hunt name remain docked in the header; question text stays in focus.</td>
+            </tr>
+            <tr>
+              <td><strong>7. Flexibility & efficiency</strong></td>
+              <td>Does the UI accommodate both quick actions and novice players?</td>
+              <td>Enter key submits answers; camera QR scanning allows instant clue entry without typing.</td>
+            </tr>
+            <tr>
+              <td><strong>8. Aesthetic & minimalist</strong></td>
+              <td>Does the design avoid unnecessary visual clutter?</td>
+              <td>Single-screen view architecture with clean typography, ample padding, and uncluttered cards.</td>
+            </tr>
+            <tr>
+              <td><strong>9. Error recovery</strong></td>
+              <td>Are error messages clear, plain-language, and constructive?</td>
+              <td>API error messages are highlighted with red feedback badges guiding player to retry.</td>
+            </tr>
+            <tr>
+              <td><strong>10. Help & documentation</strong></td>
+              <td>Is explanatory information easily accessible?</td>
+              <td>Landing page provides step-by-step "How It Works" guide; tooltips explain location requirements.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <p>CO1111 The Computing Challenge • Verification & Testing Suite</p>
+    <p style="margin-top: 0.25rem;">
+      <a href="index.html">Home</a> | <a href="app.html">App</a> | <a href="notes.html">Notes</a>
+    </p>
+  </footer>
+
+</body>
+</html>

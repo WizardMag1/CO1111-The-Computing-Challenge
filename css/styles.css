@@ -1,0 +1,305 @@
+/* =========================================================
+   CyberQuest Master Stylesheet — CO1111 The Computing Challenge
+   Developer B: WizardMag1
+   ========================================================= */
+/* 1. Design Variables */
+:root {
+    --bg_main: #0a0e17;
+    --bg_card: #131c2e;
+    --bg_card_hover: #1c273c;
+    --border_color: #24324a;
+    --accent_cyan: #00e5ff;
+    --accent_blue: #0070f3;
+    --accent_green: #10b981;
+    --accent_amber: #f59e0b;
+    --accent_purple: #8b5cf6;
+    --text_main: #f8fafc;
+    --text_muted: #94a3b8;
+    --text_dim: #64748b;
+    --font_sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --radius_sm: 6px;
+    --radius_md: 12px;
+    --radius_lg: 20px;
+}
+
+/* 2. Global Reset */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font_sans);
+    background-color: var(--bg_main);
+    color: var(--text_main);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 3. Global Links */
+a {
+    color: var(--accent_cyan);
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive Container */
+.container {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* =========================================================
+   2. Header & Navigation Bar
+   ========================================================= */
+.site_header {
+    background-color: var(--bg_card);
+    border-bottom: 1px solid var(--border_color);
+    padding: 1rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    /* Ensures the header stays on top of other elements */
+}
+
+.site_header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10, 14, 23, 0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border_color);
+    padding: 0.85rem 0;
+}
+
+/* Flexbox Layout: Logo on the left, Menu on the right */
+.nav_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* Brand Logo Group */
+.logo_group {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+}
+
+/* Small Glowing Icon Square */
+.logo_badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    background: linear-gradient(135deg, var(--accent_cyan), var(--accent_blue));
+    color: #000;
+    font-weight: 800;
+    font-size: 0.9rem;
+    border-radius: var(--radius_sm);
+}
+
+.logo_title {
+    font-size: 1.2rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--text_main);
+}
+
+/* Horizontal Navigation List */
+.nav_list {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    list-style: none;
+}
+
+.nav_list a {
+    color: var(--text_muted);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.15s ease;
+}
+
+/* Hover effect on links */
+.nav_list a:hover {
+    color: var(--accent_cyan);
+    text-decoration: none;
+}
+
+.nav_cta {
+    background: linear-gradient(135deg, var(--accent_cyan), var(--accent_blue));
+    color: #000 !important;
+    /* Force black text for maximum contrast against cyan */
+    font-weight: 700 !important;
+    padding: 0.45rem 1rem;
+    border-radius: var(--radius_md);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.nav_cta:hover {
+    box-shadow: 0 0 12px rgba(0, 229, 255, 0.4);
+    transform: translateY(-1px);
+}
+
+/* Category Pill Badges  */
+.badge_cyan {
+    background: rgba(0, 229, 255, 0.12);
+    color: var(--accent_cyan);
+    border: 1px solid rgba(0, 229, 255, 0.3);
+    padding: 0.2rem 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 9999px;
+    text-transform: uppercase;
+}
+
+.badge_green {
+    background: rgba(16, 185, 129, 0.12);
+    color: var(--accent_green);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    padding: 0.2rem 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 9999px;
+    text-transform: uppercase;
+}
+
+/* =========================================================
+   3. Hero Section, Buttons, & Metrics Strip
+   ========================================================= */
+
+.hero_section {
+    padding: 4.5rem 0 3.5rem;
+    text-align: center;
+    background: radial-gradient(circle at 50% 20%, rgba(0, 229, 255, 0.08) 0%, transparent 60%);
+}
+
+.hero_container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.hero_title {
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    margin: 1.25rem 0;
+}
+
+.hero_highlight {
+    background: linear-gradient(135deg, var(--accent_cyan), #60a5fa, var(--accent_purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero_subtitle {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    color: var(--text_muted);
+    max-width: 680px;
+    margin: 0 auto 2rem;
+}
+
+.hero_buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 3.5rem;
+}
+
+/* Button Components */
+.btn_primary,
+.btn_secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.8rem 1.6rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    border-radius: var(--radius_md);
+    cursor: pointer;
+    border: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn_primary:active,
+.btn_secondary:active {
+    transform: scale(0.98);
+}
+
+.btn_primary {
+    background: linear-gradient(135deg, var(--accent_cyan), var(--accent_blue));
+    color: #000;
+}
+
+.btn_primary:hover {
+    box-shadow: 0 0 18px rgba(0, 229, 255, 0.45);
+    text-decoration: none;
+}
+
+.btn_secondary {
+    background: var(--bg_card);
+    color: var(--text_main);
+    border: 1px solid var(--border_color);
+}
+
+.btn_secondary:hover {
+    background: var(--bg_card_hover);
+    border-color: var(--accent_cyan);
+    text-decoration: none;
+}
+
+/* Quick Metrics Strip */
+.metrics_strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1.25rem;
+    background: var(--bg_card);
+    border: 1px solid var(--border_color);
+    border-radius: var(--radius_lg);
+    padding: 1.75rem;
+}
+
+.metric_item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.metric_value {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--accent_cyan);
+    line-height: 1;
+}
+
+.metric_label {
+    font-size: 0.8rem;
+    color: var(--text_muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+}

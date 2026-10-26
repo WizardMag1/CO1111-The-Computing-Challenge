@@ -1,23 +1,337 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Treasure Hunt — Mobile Web App</title>
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/styles.css" />
+
+  <!-- PWA Manifest & Icons -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#3b82f6" />
 </head>
 <body>
-  <h1>Treasure Hunt</h1>
-  <button id="startButton">Start</button>
 
-  <div id="game" hidden>
-    <p id="question"></p>
-    <form id="answerForm">
-      <input type="text" id="answer" placeholder="Your answer">
-      <button type="submit">Submit</button>
-    </form>
-  </div>
+  <!-- Top Site Navigation Header -->
+  <header class="site-nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-brand">
+        <span>🏴‍☠️</span>
+        <span>Treasure Hunt</span>
+      </a>
+      <nav aria-label="App Navigation">
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="app.html" class="active">App</a></li>
+          <li><a href="test.html">Testing</a></li>
+          <li><a href="notes.html">Notes</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
-  <p id="message"></p>
-  <p id="score"></p>
+  <main class="app-container">
+    <!-- Screen 1: Hunt List Screen -->
+    <section id="screen-hunt-list" class="screen">
+      <div class="card" style="text-align: center;">
+        <h1 style="font-size: 1.6rem; margin-bottom: 0.5rem;">Select a Treasure Hunt</h1>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
+          Choose an active challenge below to start competing.
+        </p>
+
+        <!-- Loading Spinner -->
+        <div id="hunts-loader" style="text-align: center;">
+          <div class="spinner"></div>
+          <p style="color: var(--text-muted); font-size: 0.85rem;">Connecting to CodeCyprus API...</p>
+        </div>
+
+        <!-- Dynamic Container where A's logic fills available hunts -->
+        <div id="hunts-container" style="display: none; text-align: left;">
+          <!-- Populated by JavaScript -->
+        </div>
+
+        <button type="button" id="btn-refresh-hunts" class="btn btn-secondary btn-block" style="margin-top: 1rem;" onclick="handleRefreshHunts()">
+          🔄 Refresh Challenge List
+        </button>
+      </div>
+    </section>
+
+    <!-- Screen 2: Name Entry Screen -->
+    <section id="screen-name-entry" class="screen" hidden>
+      <div class="card">
+        <h2 style="font-size: 1.4rem; margin-bottom: 0.5rem; text-align: center;">Join the Hunt</h2>
+        <p id="selected-hunt-name" style="text-align: center; color: var(--color-primary); font-weight: 700; margin-bottom: 1.25rem;">
+          Selected Challenge
+        </p>
+
+        <form id="player-form" onsubmit="handleStartFormSubmit(event)">
+          <div class="form-group">
+            <label class="form-label" for="player-name-input">Player Nickname:</label>
+            <input type="text" id="player-name-input" class="form-input" placeholder="e.g. CaptainAlex" required maxlength="25" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="app-name-input">Application Name:</label>
+            <input type="text" id="app-name-input" class="form-input" value="TreasureHuntWebApp" required />
+          </div>
+
+          <!-- Developer A's startButton ID preserved for backwards compatibility -->
+          <button type="button" id="startButton" class="btn btn-primary btn-block">
+            Start Challenge 🚀
+          </button>
+
+          <button type="button" class="btn btn-secondary btn-block" style="margin-top: 0.75rem;" onclick="showScreen('screen-hunt-list')">
+            ← Back to Hunt List
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Screen 3: Question / Gameplay Screen (Also preserves Developer A's game ID) -->
+    <section id="screen-question" class="screen" hidden>
+      <div id="game">
+        <!-- Live Status Bar -->
+        <div class="game-status-bar">
+          <div class="stat-box">
+            <span class="stat-label">Current Score</span>
+            <!-- Developer A's score element preserved -->
+            <span class="stat-value" id="score">0</span>
+          </div>
+          <div class="stat-box" style="text-align: right;">
+            <span class="stat-label">Progress</span>
+            <span id="question-counter" style="font-size: 1rem; font-weight: 700; color: var(--text-main);">Clue 1 of ?</span>
+          </div>
+        </div>
+
+        <!-- Question Card -->
+        <div class="card">
+          <!-- Developer A's question element preserved -->
+          <h2 id="question" class="question-text">Loading clue...</h2>
+
+          <!-- Adaptive Answer Containers for all 4 Question Types -->
+
+          <!-- 1. Text Answer Container (Matches Developer A's answerForm and answer) -->
+          <div id="answer-container-text">
+            <form id="answerForm">
+              <div class="form-group">
+                <input type="text" id="answer" class="form-input" placeholder="Type your answer here..." autocomplete="off" />
+              </div>
+              <button type="submit" id="btn-submit-answer" class="btn btn-primary btn-block">
+                Submit Answer
+              </button>
+            </form>
+          </div>
+
+          <!-- 2. Boolean Answer Container -->
+          <div id="answer-container-boolean" class="boolean-grid" hidden>
+            <button type="button" id="btn-bool-true" class="btn btn-bool true" onclick="submitAdaptiveAnswer('True')">
+              ✓ True
+            </button>
+            <button type="button" id="btn-bool-false" class="btn btn-bool false" onclick="submitAdaptiveAnswer('False')">
+              ✕ False
+            </button>
+          </div>
+
+          <!-- 3. Multiple Choice (MCQ) Container -->
+          <div id="answer-container-mcq" class="mcq-grid" hidden>
+            <button type="button" id="btn-mcq-a" class="btn btn-mcq" onclick="submitAdaptiveAnswer('A')">
+              <span class="mcq-badge">A</span> Option A
+            </button>
+            <button type="button" id="btn-mcq-b" class="btn btn-mcq" onclick="submitAdaptiveAnswer('B')">
+              <span class="mcq-badge">B</span> Option B
+            </button>
+            <button type="button" id="btn-mcq-c" class="btn btn-mcq" onclick="submitAdaptiveAnswer('C')">
+              <span class="mcq-badge">C</span> Option C
+            </button>
+            <button type="button" id="btn-mcq-d" class="btn btn-mcq" onclick="submitAdaptiveAnswer('D')">
+              <span class="mcq-badge">D</span> Option D
+            </button>
+          </div>
+
+          <!-- 4. Numeric Answer Container -->
+          <div id="answer-container-numeric" hidden>
+            <form id="numericForm" onsubmit="event.preventDefault(); submitAdaptiveAnswer(document.getElementById('answer-numeric-input').value);">
+              <div class="form-group">
+                <input type="number" id="answer-numeric-input" class="form-input" inputmode="decimal" step="any" placeholder="Enter numeric answer..." />
+              </div>
+              <button type="submit" id="btn-submit-numeric" class="btn btn-primary btn-block">
+                Submit Number
+              </button>
+            </form>
+          </div>
+
+          <!-- Secondary Actions (Skip, QR Scanner, Map) -->
+          <div class="action-controls">
+            <button type="button" id="skipButton" class="btn btn-secondary">
+              ⏭️ Skip Clue
+            </button>
+            <button type="button" id="qrButton" class="btn btn-secondary" onclick="toggleQRModal(true)">
+              📷 Scan QR
+            </button>
+            <button type="button" id="mapButton" class="btn btn-secondary" onclick="toggleMapContainer()">
+              🗺️ Map View
+            </button>
+          </div>
+
+          <!-- Collapsible Leaflet Map Container -->
+          <div id="map-container" style="display: none; height: 260px; margin-top: 1rem; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-color);">
+            <div id="leaflet-map" style="height: 100%; width: 100%;"></div>
+          </div>
+        </div>
+
+        <!-- Developer A's message feedback element preserved -->
+        <p id="message" class="status-message"></p>
+      </div>
+    </section>
+
+    <!-- Screen 4: Finish Screen -->
+    <section id="screen-finish" class="screen" hidden>
+      <div class="card" style="text-align: center; padding: 2.5rem 1.5rem;">
+        <span style="font-size: 3rem;">🎉</span>
+        <h2 style="font-size: 1.8rem; margin: 0.75rem 0; color: var(--color-success);">Treasure Hunt Completed!</h2>
+        <p id="finish-message" style="color: var(--text-muted); margin-bottom: 1.5rem;">
+          Congratulations! You navigated all clues in the challenge.
+        </p>
+
+        <div style="background: var(--bg-page); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.5rem;">
+          <span class="stat-label">Your Final Score</span>
+          <div id="final-score" style="font-size: 2.5rem; font-weight: 800; color: var(--color-primary);">0</div>
+        </div>
+
+        <div class="action-controls">
+          <button type="button" id="btn-view-leaderboard" class="btn btn-primary btn-block" onclick="showScreen('screen-leaderboard')">
+            🏆 View Standings
+          </button>
+          <button type="button" id="btn-restart" class="btn btn-secondary btn-block" onclick="showScreen('screen-hunt-list')">
+            Play Another Hunt
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Screen 5: Leaderboard Screen -->
+    <section id="screen-leaderboard" class="screen" hidden>
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <h2 style="font-size: 1.4rem;">🏆 Leaderboard</h2>
+          <button type="button" id="btn-close-leaderboard" class="btn btn-secondary" style="min-height: 38px; padding: 0.35rem 0.75rem; font-size: 0.85rem;" onclick="showScreen('screen-question')">
+            ✕ Back
+          </button>
+        </div>
+
+        <div style="overflow-x: auto;">
+          <table class="leaderboard-table" id="leaderboard-table">
+            <thead>
+              <tr>
+                <th style="width: 60px;">Rank</th>
+                <th>Player</th>
+                <th>Score</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboard-body">
+              <tr>
+                <td colspan="3" style="text-align: center; color: var(--text-muted);">
+                  Loading leaderboard scores...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- QR Code Scanner Modal -->
+    <div id="qr-modal" class="modal-overlay" style="display: none;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 style="font-size: 1.15rem; font-weight: 700;">Scan Clue QR Code</h3>
+          <button type="button" class="modal-close" onclick="toggleQRModal(false)">&times;</button>
+        </div>
+        <div id="qr-reader" style="width: 100%; min-height: 240px; background: #000; border-radius: var(--radius-sm);"></div>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.75rem; text-align: center;">
+          Position the QR code inside the camera viewfinder.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <p>CO1111 The Computing Challenge • UCLan Cyprus</p>
+    <p style="margin-top: 0.25rem;">
+      <a href="index.html">Landing Page</a> |
+      <a href="test.html">Testing Documentation</a> |
+      <a href="notes.html">Team Minutes</a>
+    </p>
+  </footer>
+
+  <!-- Developer B UI Helper Utilities -->
+  <script>
+    /**
+     * Show one screen at a time, hiding all other screen containers
+     * @param {string} screenId The ID of the screen section to show
+     */
+    function showScreen(screenId) {
+      const screens = document.querySelectorAll('.screen');
+      screens.forEach(screen => {
+        if (screen.id === screenId) {
+          screen.removeAttribute('hidden');
+        } else {
+          screen.setAttribute('hidden', '');
+        }
+      });
+    }
+
+    /**
+     * Submit adaptive answer helper
+     */
+    function submitAdaptiveAnswer(value) {
+      const input = document.getElementById('answer');
+      if (input) {
+        input.value = value;
+      }
+      // Trigger developer A's form submit or sendAnswer if available
+      if (typeof sendAnswer === 'function' && typeof session !== 'undefined' && session) {
+        sendAnswer(session, value);
+      } else {
+        const form = document.getElementById('answerForm');
+        if (form) form.dispatchEvent(new Event('submit', { cancelable: true }));
+      }
+    }
+
+    function toggleQRModal(show) {
+      const modal = document.getElementById('qr-modal');
+      if (modal) modal.style.display = show ? 'flex' : 'none';
+    }
+
+    function toggleMapContainer() {
+      const mapBox = document.getElementById('map-container');
+      if (mapBox) {
+        const isHidden = mapBox.style.display === 'none';
+        mapBox.style.display = isHidden ? 'block' : 'none';
+      }
+    }
+
+    function handleStartFormSubmit(e) {
+      e.preventDefault();
+      const startBtn = document.getElementById('startButton');
+      if (startBtn) startBtn.click();
+    }
+
+    function handleRefreshHunts() {
+      if (typeof loadHunts === 'function') {
+        loadHunts();
+      } else if (typeof startGame === 'function') {
+        // Fallback to developer A's starter
+        startGame();
+      }
+    }
+  </script>
+
+  <!-- Developer A Game Logic (Crucial: Resolves Bug #1 where app.html never loaded app.js) -->
+  <script src="app.js"></script>
+
 </body>
 </html>

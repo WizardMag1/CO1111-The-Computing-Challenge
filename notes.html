@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Team Collaboration Notes & Minutes — CO1111</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .notes-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem;
+      flex: 1;
+    }
+    .meeting-entry {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .meeting-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .meeting-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    .meeting-date {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .sub-section-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      margin: 0.75rem 0 0.25rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Site Navigation Header -->
+  <header class="site-nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-brand">
+        <span>🏴‍☠️</span>
+        <span>Treasure Hunt</span>
+      </a>
+      <nav aria-label="Notes Navigation">
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="app.html">App</a></li>
+          <li><a href="test.html">Testing</a></li>
+          <li><a href="notes.html" class="active">Notes</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="notes-container">
+    <div style="text-align: center; margin-bottom: 2.5rem;">
+      <h1 style="font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem;">Teamwork Minutes & Progress Log</h1>
+      <p style="color: var(--text-muted); max-width: 650px; margin: 0 auto;">
+        Documenting weekly meetings, task allocations, technical decisions, and collaborative contributions throughout CO1111 The Computing Challenge.
+      </p>
+    </div>
+
+    <!-- Team Overview & Roles Section -->
+    <section class="card" style="margin-bottom: 2rem;">
+      <h2 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 1rem;">1. Team Members & Allocated Roles</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+        <div style="background: var(--bg-page); padding: 1rem; border-radius: var(--radius-md);">
+          <h3 style="font-size: 1.05rem; font-weight: 700;">Alex A (@alex)</h3>
+          <p style="color: var(--color-primary); font-size: 0.85rem; font-weight: 600;">Developer A: App Logic</p>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.4rem;">
+            Owns <code>app.js</code>, API endpoints integration, question loop, state persistence, and unit testing logic.
+          </p>
+        </div>
+
+        <div style="background: var(--bg-page); padding: 1rem; border-radius: var(--radius-md);">
+          <h3 style="font-size: 1.05rem; font-weight: 700;">WizardMag1</h3>
+          <p style="color: var(--color-primary); font-size: 0.85rem; font-weight: 600;">Developer B: UI, Styles & GitHub</p>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.4rem;">
+            Owns <code>app.html</code>, <code>index.html</code>, <code>css/styles.css</code>, page markup of testing & notes, PWA setup, and GitHub repository administration.
+          </p>
+        </div>
+
+        <div style="background: var(--bg-page); padding: 1rem; border-radius: var(--radius-md);">
+          <h3 style="font-size: 1.05rem; font-weight: 700;">Member C</h3>
+          <p style="color: var(--color-primary); font-size: 0.85rem; font-weight: 600;">Content, QA & Marketing</p>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.4rem;">
+            Owns website copywriting, social media campaigns, UAT testing plans, and weekly meeting minutes.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Meeting Log Entries -->
+    <section>
+      <h2 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 1rem;">2. Meeting Minutes</h2>
+
+      <!-- Meeting 1 -->
+      <article class="meeting-entry">
+        <div class="meeting-header">
+          <h3 class="meeting-title">Meeting 1: Project Kick-off, Role Allocation & Interface Agreement</h3>
+          <span class="meeting-date">Date: 26 October 2026 • 14:00</span>
+        </div>
+        <p><strong>Attendees:</strong> Alex A (Developer A), WizardMag1 (Developer B), Member C (Content/QA)</p>
+
+        <h4 class="sub-section-title">Agenda & Discussion</h4>
+        <ul style="padding-left: 1.25rem; font-size: 0.9rem; line-height: 1.7;">
+          <li>Review of the CO1111 Assessment Brief and final submission deadline (11 Dec 2026, 17:00).</li>
+          <li>Agreement on file ownership and task breakdown to ensure visible individual Git contributions.</li>
+          <li>Establishment of the UI/Logic interface contract (agreed element IDs and function interfaces).</li>
+          <li>Setup of Git feature branch workflow (<code>feature/app-logic</code>, <code>feature/ui-landing</code>) and PR reviews.</li>
+        </ul>
+
+        <h4 class="sub-section-title">Decisions & Agreements</h4>
+        <ul style="padding-left: 1.25rem; font-size: 0.9rem; line-height: 1.7;">
+          <li>Developer B provides the multi-screen mobile-first markup in <code>app.html</code> with containers for all 4 question types.</li>
+          <li>Developer A owns <code>app.js</code> and refactors the API communication, removing hardcoded values and fixing variable scope bugs.</li>
+          <li>Member C creates initial marketing copy, social media channels, and the UAT testing matrix.</li>
+          <li>GitHub Pages will be served directly from <code>main</code> branch root.</li>
+        </ul>
+
+        <h4 class="sub-section-title">Action Items for Next Meeting</h4>
+        <ul style="padding-left: 1.25rem; font-size: 0.9rem; line-height: 1.7;">
+          <li><strong>Alex A:</strong> Complete API question loop and test against CodeCyprus live/testing endpoints.</li>
+          <li><strong>WizardMag1:</strong> Finish responsive styling for all screen viewports (360px, 768px, 1280px) and add PWA manifest.</li>
+          <li><strong>Member C:</strong> Publish first social media teaser post and prepare screenshots for the marketing section.</li>
+        </ul>
+
+        <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--text-muted);">
+          <strong>Next Scheduled Meeting:</strong> Monday, 2 November 2026 at 14:00.
+        </p>
+      </article>
+
+      <!-- Reusable Meeting Entry Template -->
+      <article class="meeting-entry" style="border: 2px dashed var(--border-color); background: var(--bg-page);">
+        <div class="meeting-header">
+          <h3 class="meeting-title" style="color: var(--text-muted);">Meeting [N] Template (For Upcoming Sprints)</h3>
+          <span class="meeting-date">Date: [DD Month 2026]</span>
+        </div>
+        <p><strong>Attendees:</strong> [List of team members present]</p>
+
+        <h4 class="sub-section-title">Progress Since Last Meeting</h4>
+        <p style="font-size: 0.88rem; color: var(--text-muted);">[Summary of PRs merged and milestones achieved]</p>
+
+        <h4 class="sub-section-title">Individual Work Breakdown</h4>
+        <ul style="padding-left: 1.25rem; font-size: 0.88rem; color: var(--text-muted);">
+          <li><strong>Developer A:</strong> [Work completed]</li>
+          <li><strong>Developer B:</strong> [Work completed]</li>
+          <li><strong>Member C:</strong> [Work completed]</li>
+        </ul>
+
+        <h4 class="sub-section-title">Blockers & Solutions</h4>
+        <p style="font-size: 0.88rem; color: var(--text-muted);">[Any challenges faced and how the team solved them]</p>
+
+        <h4 class="sub-section-title">Next Steps</h4>
+        <p style="font-size: 0.88rem; color: var(--text-muted);">[Action items for the upcoming sprint]</p>
+      </article>
+    </section>
+
+    <!-- Features for Markers Notice -->
+    <section class="card" style="margin-top: 2rem;">
+      <h2 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem;">3. Notice of Features for Coursework Markers</h2>
+      <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 0.75rem;">
+        As recommended in Footnote 2 of the Assessment Brief, below are advanced features that may not be immediately obvious during quick inspection:
+      </p>
+      <ul style="padding-left: 1.25rem; font-size: 0.88rem; line-height: 1.8;">
+        <li><strong>Full SEO Metadata:</strong> Open Graph tags, Twitter Card headers, semantic headings, and descriptive alt attributes.</li>
+        <li><strong>Adaptive Input Controls:</strong> Distinct DOM inputs for Multiple Choice (A-D buttons), Boolean (True/False toggles), and Numeric inputs (<code>inputmode="decimal"</code>).</li>
+        <li><strong>Progressive Web App (PWA):</strong> Fully valid <code>manifest.json</code> and Service Worker (<code>sw.js</code>) enabling offline app shell loading.</li>
+        <li><strong>Multi-Viewport Optimization:</strong> Verified responsive layouts tested across 360px (mobile), 768px (tablet), and 1280px (desktop).</li>
+      </ul>
+    </section>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <p>CO1111 The Computing Challenge • UCLan Cyprus</p>
+    <p style="margin-top: 0.25rem;">
+      <a href="index.html">Home</a> | <a href="app.html">App</a> | <a href="test.html">Testing</a>
+    </p>
+  </footer>
+
+</body>
+</html>

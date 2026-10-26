@@ -111,7 +111,6 @@ a:hover {
     justify-content: center;
     width: 34px;
     height: 34px;
-    background: linear-gradient(135deg, var(--accent_cyan), var(--accent_blue));
     color: #000;
     font-weight: 800;
     font-size: 0.9rem;
@@ -147,7 +146,6 @@ a:hover {
 }
 
 .nav_cta {
-    background: linear-gradient(135deg, var(--accent_cyan), var(--accent_blue));
     color: #000 !important;
     /* Force black text for maximum contrast against cyan */
     font-weight: 700 !important;
@@ -191,7 +189,6 @@ a:hover {
 .hero_section {
     padding: 4.5rem 0 3.5rem;
     text-align: center;
-    background: radial-gradient(circle at 50% 20%, rgba(0, 229, 255, 0.08) 0%, transparent 60%);
 }
 
 .hero_container {
@@ -209,7 +206,6 @@ a:hover {
 }
 
 .hero_highlight {
-    background: linear-gradient(135deg, var(--accent_cyan), #60a5fa, var(--accent_purple));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -250,8 +246,8 @@ a:hover {
 }
 
 .btn_primary {
-    background: linear-gradient(135deg, var(--accent_cyan), var(--accent_blue));
-    color: #000;
+    background:
+        color: #000;
 }
 
 .btn_primary:hover {

@@ -1,24 +1,112 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <h1>Treasure Hunt</h1>
-    <button id="startButton">Start</button>
 
-    <div id="game" hidden>
-      <p id="question"></p>
-      <form id="answerForm">
-        <input type="text" id="answer" placeholder="Your answer" />
-        <button type="submit">Submit</button>
-      </form>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CyberQuest Mobile Web App — Play the Code Cyprus Treasure Hunt live on campus.">
+  <meta name="author" content="@WizardMag1;@godoflevels;@jaspreetsingh052000-cell">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#c8102e">
+  <link rel="stylesheet" href="css/styles.css">
+  <title>CyberQuest — Play Treasure Hunt | UCLan Cyprus</title>
+</head>
+
+<body>
+  <!-- Header -->
+  <header class="site_header">
+    <div class="header_container">
+      <div class="site_logo">
+        <a href="index.html" class="logo_link">
+          <span class="logo_badge">CQ</span>
+          <span class="logo_text">CyberQuest</span>
+        </a>
+      </div>
+      <nav class="main_nav">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#how_it_works">How It Works</a></li>
+          <li><a href="test.html">Test &amp; UAT</a></li>
+          <li><a href="notes.html">Notes</a></li>
+          <li><a href="app.html" class="nav_cta">Play App</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Game Container -->
+  <main class="game_viewport">
+    
+    <!-- Game Setup Card -->
+    <div class="clue_card" id="start_screen">
+      <div class="section_header" style="margin-bottom: 1rem;">
+        <span class="badge">Live Hunt</span>
+        <h2>Code Cyprus Treasure Hunt</h2>
+        <p class="section_lead">Connect to the live game server and begin your campus challenge.</p>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <button id="startButton" class="btn_primary" style="width: 100%;">Start Challenge</button>
+      </div>
     </div>
 
-    <p id="message"></p>
-    <p id="score"></p>
-    <script src="app.js"></script>
-  </body>
+    <!-- Active Game Screen (Hidden initially) -->
+    <div id="game" hidden class="clue_card">
+      
+      <!-- Field HUD -->
+      <div class="game_hud">
+        <div class="hud_item">
+          <div class="hud_stat_label">Status</div>
+          <div class="hud_stat_value" style="font-size: 1rem; color: var(--accent_green);">ACTIVE</div>
+        </div>
+        <div class="hud_item">
+          <div class="hud_stat_label">Current Score</div>
+          <div id="score" class="hud_stat_value">0</div>
+        </div>
+        <div class="hud_item">
+          <div class="hud_stat_label">GPS Sync</div>
+          <div class="hud_stat_value" style="font-size: 1rem; color: var(--brand_navy);">READY</div>
+        </div>
+      </div>
+
+      <!-- Question Text -->
+      <div>
+        <span class="badge" style="margin-bottom: 0.5rem;">Current Clue</span>
+        <p id="question" style="font-size: 1.15rem; font-weight: 600; color: var(--text_main); line-height: 1.5; margin-top: 0.5rem;">
+          Loading your question...
+        </p>
+      </div>
+
+      <!-- Answer Form -->
+      <form id="answerForm" style="display: flex; flex-direction: column; gap: 1rem;">
+        <input type="text" id="answer" class="answer_input" placeholder="Type your answer here..." autocomplete="off" required>
+        <button type="submit" class="btn_primary" style="width: 100%;">Submit Answer</button>
+      </form>
+
+    </div>
+
+    <!-- Live Status / Server Feedback Message -->
+    <p id="message" class="feedback_banner" style="text-align: center; color: var(--text_muted);"></p>
+
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site_footer">
+    <div class="container_footer_container">
+      <div class="footer_info">
+        <strong>CyberQuest</strong> &mdash; CO1111 The Computing Challenge<br>
+        <span class="footer_subtext">School of Sciences, University of Central Lancashire (UCLan Cyprus)</span>
+      </div>
+      <div class="footer_nav">
+        <a href="index.html">Landing</a> |
+        <a href="app.html">App</a> |
+        <a href="test.html">Testing</a> |
+        <a href="notes.html">Notes</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+
 </html>

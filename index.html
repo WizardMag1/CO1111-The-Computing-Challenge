@@ -7,8 +7,10 @@
   <meta name="description"
     content="CyberQuest is an interactive mobile treasure hunt web app engineered for the CO1111 Computing Challenge at UCLan Cyprus.">
   <meta name="keywords" content="HTML, CSS, JavaScript, CyberQuest, Treasure Hunt, UCLan Cyprus, CO1111, Gaming">
-  <meta name="author" content="@WizardMag1;@godoflevels;@">
+  <meta name="author" content="@WizardMag1;@godoflevels;@jaspreetsingh052000-cell">
 
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#c8102e">
   <link rel="stylesheet" href="css/styles.css">
   <title>Cyber Quest - Tresure Hunt | Uclan Cyprus</title>
 </head>
@@ -18,25 +20,29 @@
     <!-- Navigation && Branding -->
     <div class="header_container">
       <div class="site_logo">
-        <!-- Logo will be placed here -->
+        <a href="index.html" class="logo_link">
+          <span class="logo_badge">CQ</span>
+          <span class="logo_text">CyberQuest</span>
+        </a>
       </div>
 
       <nav class="main_nav">
         <ul>
           <li><a href="#about">About</a></li>
+          <li><a href="#how_it_works">How It Works</a></li>
           <li><a href="#team">Team</a></li>
-          <li><a href="#features">Features</a></li>
           <li><a href="#marketing">Marketing</a></li>
-          <li><a href="test.html">Test & UAT</a></li>
-          <li><a href="notes.html">notes</a> </li>
-          <li><a href="app.html">Play the Game</a> </li>
+          <li><a href="#project_scope">Project Scope</a></li>
+          <li><a href="test.html">Test &amp; UAT</a></li>
+          <li><a href="notes.html">Notes</a></li>
+          <li><a href="app.html" class="nav_cta">Play App</a></li>
         </ul>
       </nav>
     </div>
   </header>
   <main>
     <!-- Main Content -->
-    <section class="hero">
+    <section class="hero_section">
       <div class="hero_container">
         <div class="hero_content">
           <span class="hero_content"></span>
@@ -54,7 +60,7 @@
         </div>
       </div>
     </section>
-    <!-- About / Project Scope Section -->
+        <!-- About / Project Scope Section -->
     <section id="about" class="about_section">
       <div class="container">
 
@@ -67,53 +73,6 @@
             at the University of Central Lancashire (UCLan Cyprus).
           </p>
         </div>
-        <!-- How GamePlay Mech-->
-        <section id="how_it_works" class="gameplay_section">
-          <div class="container">
-
-            <div class="section_header">
-              <span class="badge">Gameplay Guide</span>
-              <h2>How to Play CyberQuest</h2>
-              <p class="section_lead">Three simple steps to compete in campus treasure hunts.</p>
-            </div>
-
-            <!-- 3-Step Cards Grid -->
-            <div class="steps_grid">
-
-              <!-- Step 1 -->
-              <div class="step_card">
-                <div class="step_number">01</div>
-                <h3>Join a Challenge</h3>
-                <p>
-                  Launch the app, pick an active hunt from the Code Cyprus server,
-                  and enter your unique player nickname.
-                </p>
-              </div>
-
-              <!-- Step 2 -->
-              <div class="step_card">
-                <div class="step_number">02</div>
-                <h3>Navigate & Sync GPS</h3>
-                <p>
-                  Follow the geographic clues to physical campus checkpoints.
-                  The app automatically verifies your real-time coordinates.
-                </p>
-              </div>
-
-              <!-- Step 3 -->
-              <div class="step_card">
-                <div class="step_number">03</div>
-                <h3>Solve, Scan & Score</h3>
-                <p>
-                  Answer clues using tailored input controls or scan physical QR codes
-                  to score points and climb the live leaderboard.
-                </p>
-              </div>
-
-            </div>
-
-          </div>
-        </section>
 
         <!-- Two-Column Content Grid -->
         <div class="about_content">
@@ -150,6 +109,55 @@
 
       </div>
     </section>
+
+    <!-- Gameplay Guide Section -->
+    <section id="how_it_works" class="gameplay_section">
+      <div class="container">
+
+        <div class="section_header">
+          <span class="badge">Gameplay Guide</span>
+          <h2>How to Play CyberQuest</h2>
+          <p class="section_lead">Three simple steps to compete in campus treasure hunts.</p>
+        </div>
+
+        <!-- 3-Step Cards Grid -->
+        <div class="steps_grid">
+
+          <!-- Step 1 -->
+          <div class="step_card">
+            <div class="step_number">01</div>
+            <h3>Join a Challenge</h3>
+            <p>
+              Launch the app, pick an active hunt from the Code Cyprus server,
+              and enter your unique player nickname.
+            </p>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="step_card">
+            <div class="step_number">02</div>
+            <h3>Navigate &amp; Sync GPS</h3>
+            <p>
+              Follow the geographic clues to physical campus checkpoints.
+              The app automatically verifies your real-time coordinates.
+            </p>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="step_card">
+            <div class="step_number">03</div>
+            <h3>Solve, Scan &amp; Score</h3>
+            <p>
+              Answer clues using tailored input controls or scan physical QR codes
+              to score points and climb the live leaderboard.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
     <!-- Team Members & Roles Section -->
     <section id="team" class="team_section">
       <div class="container">
@@ -189,6 +197,21 @@
               GitHub Profile →
             </a>
           </div>
+
+          <!-- Member 3: Jaspreet Singh -->
+          <div class="team_card">
+            <div class="team_avatar">J</div>
+            <h3 class="team_name">Jaspreet Singh</h3>
+            <div class="team_role">Developer C & QA Lead</div>
+            <p class="team_bio">
+              Responsible for question content engineering, user testing verification on <code>test.html</code>,
+              meeting documentation in <code>notes.html</code>, and accessibility compliance.
+            </p>
+            <a href="https://github.com/jaspreetsingh052000-cell" target="_blank" rel="noopener" class="team_link">
+              GitHub Profile &rarr;
+            </a>
+          </div>
+
 
         </div>
 
@@ -323,8 +346,7 @@
                 <tr>
                   <td><strong>Security</strong></td>
                   <td>Adhere to UCLan security policies and data protection regulations.</td>
-                  <td><strong>Security Measures</strong>: HTTPS (local), secure API key storage, and protection against
-                    common web vulnerabilities.</td>
+                  <td><strong>Security Measures</strong>: HTTPS transport, sanitised input handling, and session parameter integrity.</td>
                 </tr>
                 <tr>
                   <td><strong>Reporting</strong></td>
@@ -356,7 +378,7 @@
                 </div>
                 <div class="feature_item">
                   <h4>Performance Optimization</h4>
-                  <p>Lazy loading, code splitting, and asset optimization for faster mobile performance.</p>
+                  <p>Lightweight zero-dependency architecture, optimized asset delivery, and efficient DOM updates.</p>
                 </div>
                 <div class="feature_item">
                   <h4>Browser Compatibility</h4>
@@ -372,8 +394,8 @@
 
               <div class="feature_grid">
                 <div class="feature_item">
-                  <h4>Authentication</h4>
-                  <p>Secure session management using authentication tokens.</p>
+                  <h4>Session Management</h4>
+                  <p>Real-time session handshake via <code>/start</code> endpoint and active session tracking.</p>
                 </div>
                 <div class="feature_item">
                   <h4>Game State Management</h4>
@@ -405,8 +427,8 @@
                   <p>Automatic restoration of game state on page reload.</p>
                 </div>
                 <div class="feature_item">
-                  <h4>Cross-Device Sync</h4>
-                  <p>Optional cloud sync for seamless transitions between devices.</p>
+                  <h4>State Persistence</h4>
+                  <p>Browser localStorage synchronization ensuring continuity across refreshes and signal drops.</p>
                 </div>
                 <div class="feature_item">
                   <h4>Progress Visualization</h4>
@@ -451,7 +473,16 @@
                   <p>Automated tests for game logic, API integration, and session management.</p>
                 </div>
                 <div class="feature_item">
-                  <h4>
+                  <h4>User Acceptance Testing</h4>
+                  <p>Cross-device verification, geolocation validation, and responsive audits on test.html.</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <!-- Site Footer -->

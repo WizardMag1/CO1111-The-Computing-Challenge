@@ -9,8 +9,10 @@ const answerForm = document.getElementById("answerForm");
 const answerInput = document.getElementById("answer");
 const message = document.getElementById("message");
 const score = document.getElementById("score");
+const startScreen = document.getElementById("start_screen");
 
-startButton.addEventListener("click", async () => {
+document.getElementById("startForm").addEventListener("submit", async (event) => {
+  event.preventDefault();
   await startGame();
 });
 
@@ -26,6 +28,7 @@ answerForm.addEventListener("submit", async (event) => {
 
 async function startGame() {
   try {
+    const playerNameInput = document.getElementById("nameInput").value.trim();
     message.textContent = "Starting game...";
     startButton.disabled = true;
 
@@ -35,7 +38,7 @@ async function startGame() {
 
     const huntId = data.treasureHunts[0].uuid;
     const params = new URLSearchParams({
-      player: playerName || "Anonymous",
+      player: playerNameInput || "Anonymous" + Math.floor(Math.random() * 1000),
       app: "Code Cyprus Treasure Hunt",
       "treasure-hunt-id": huntId,
     });
@@ -47,14 +50,15 @@ async function startGame() {
     console.log(startData);
     if (startData.status === "OK") {
       session = startData.session;
+      startScreen.hidden = true;
 
       await getQuestion(session);
     } else {
-      message.textContent = startData.message || "Failed to start game";
+      message.textContent = message.textContent = startData.errorMessages?.[0] || "Failed to start game";;
       startButton.disabled = false;
     }
   } catch (error) {
-    message.textContent = error.message;
+    message.textContent = error.message || "An error occurred while starting the game";
     startButton.disabled = false;
   }
 }
@@ -70,7 +74,7 @@ async function getQuestion(session) {
 
   console.log(data);
   if (data.status !== "OK") {
-    message.textContent = data.message;
+    message.textContent = data.errorMessages?.[0] || "Something went wrong";
     return;
   }
 
@@ -81,7 +85,7 @@ async function getQuestion(session) {
     return;
   }
 
-  questionElement.textContent = data.questionText;
+  questionElement.innerHTML = data.questionText;
   game.hidden = false;
 }
 
@@ -99,9 +103,14 @@ async function sendAnswer(session, answer) {
 
   console.log(data);
 
-  if (data.status != "OK") {
-    message.textContent = data.message;
+  if (data.status !== "OK") {
+    message.textContent = data.errorMessages?.[0] || "Something went wrong";
     return;
+  } else if (data.correct) {
+    message.textContent = "Correct answer!";
+    getQuestion(session);
+  } else {
+    message.textContent = "Incorrect answer. Try again!";
   }
   if (data.status === "OK" && !data.completed) {
     await getQuestion(session);

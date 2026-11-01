@@ -1,6 +1,4 @@
 let session = "";
-let selectedHuntId = "";
-let playerName = "";
 
 const startButton = document.getElementById("startButton");
 const game = document.getElementById("game");
@@ -9,9 +7,16 @@ const answerForm = document.getElementById("answerForm");
 const answerInput = document.getElementById("answer");
 const message = document.getElementById("message");
 const score = document.getElementById("score");
+const startScreen = document.getElementById("start_screen");
+const skipButton = document.getElementById("skipButton");
 
-startButton.addEventListener("click", async () => {
+document.getElementById("startForm").addEventListener("submit", async (event) => {
+  event.preventDefault();
   await startGame();
+});
+
+skipButton.addEventListener("click", async () => {
+  await skipQuestion(session);
 });
 
 answerForm.addEventListener("submit", async (event) => {
@@ -26,6 +31,7 @@ answerForm.addEventListener("submit", async (event) => {
 
 async function startGame() {
   try {
+    const playerNameInput = document.getElementById("nameInput").value.trim();
     message.textContent = "Starting game...";
     startButton.disabled = true;
 
@@ -35,7 +41,7 @@ async function startGame() {
 
     const huntId = data.treasureHunts[0].uuid;
     const params = new URLSearchParams({
-      player: playerName || "Anonymous",
+      player: playerNameInput || "Anonymous" + Math.floor(Math.random() * 1000),
       app: "Code Cyprus Treasure Hunt",
       "treasure-hunt-id": huntId,
     });
@@ -43,18 +49,18 @@ async function startGame() {
     const res = await fetch(`https://codecyprus.org/th/api/start?${params}`);
 
     const startData = await res.json();
-
-    console.log(startData);
     if (startData.status === "OK") {
       session = startData.session;
+      startScreen.hidden = true;
+      message.textContent = "";
 
       await getQuestion(session);
     } else {
-      message.textContent = startData.message || "Failed to start game";
+      message.textContent = startData.errorMessages?.[0] || "Failed to start game";
       startButton.disabled = false;
     }
   } catch (error) {
-    message.textContent = error.message;
+    message.textContent = error.message || "An error occurred while starting the game";
     startButton.disabled = false;
   }
 }
@@ -67,10 +73,8 @@ async function getQuestion(session) {
   );
 
   const data = await response.json();
-
-  console.log(data);
   if (data.status !== "OK") {
-    message.textContent = data.message;
+    message.textContent = data.errorMessages?.[0] || "Something went wrong";
     return;
   }
 
@@ -81,8 +85,9 @@ async function getQuestion(session) {
     return;
   }
 
-  questionElement.textContent = data.questionText;
+  questionElement.innerHTML = data.questionText;
   game.hidden = false;
+  skipButton.hidden = !data.canBeSkipped;
 }
 
 async function sendAnswer(session, answer) {
@@ -97,13 +102,64 @@ async function sendAnswer(session, answer) {
 
   const data = await response.json();
 
-  console.log(data);
+  if (data.status !== "OK") {
+    message.textContent = data.errorMessages?.[0] || "Something went wrong";
+    return;
+  } 
+  if (data.correct) {
+    if (data.completed) {
+      message.textContent = "Congratulations! You've completed the game!";
+      game.hidden = true;
+      startButton.disabled = false;
+      return;
+    }
+    await getQuestion(session);
+    await updateScore(session);
+  } else {
+    message.textContent = data.message || "Incorrect answer. Try again!";
+  }
+}
 
-  if (data.status != "OK") {
-    message.textContent = data.message;
+async function showFinalScore(session) {
+  const params = new URLSearchParams({ session });
+  const response = await fetch(`https://codecyprus.org/th/api/score?${params}`);
+  const data = await response.json();
+
+  if (data.status === "OK") {
+    score.textContent = data.score;
+    message.textContent = `Game finished! Your score: ${data.score}`;
+  }
+  game.hidden = true;
+  startButton.disabled = false;
+}
+
+async function skipQuestion(session) {
+  const params = new URLSearchParams({ session });
+  const response = await fetch(`https://codecyprus.org/th/api/skip?${params}`);
+  const data = await response.json();
+
+  if (data.status !== "OK") {
+    message.textContent = data.errorMessages?.[0] || "Could not skip";
     return;
   }
-  if (data.status === "OK" && !data.completed) {
-    await getQuestion(session);
+
+  message.textContent = data.message || "Question skipped";
+
+  if (data.completed) {
+    await showFinalScore(session);
+    return;
+  }
+
+  await getQuestion(session);
+  await updateScore(session);
+}
+
+async function updateScore(session) {
+  const params = new URLSearchParams({ session });
+  const response = await fetch(`https://codecyprus.org/th/api/score?${params}`);
+  const data = await response.json();
+
+  if (data.status === "OK") {
+    score.textContent = data.score;
   }
 }

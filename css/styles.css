@@ -915,3 +915,7 @@ td strong {
         font-size: 0.85rem;
     }
 }
+
+[hidden] {
+  display: none !important;
+}

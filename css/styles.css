@@ -233,8 +233,8 @@ a:hover {
     text-transform: uppercase;
     letter-spacing: 0.06em;
     border-radius: 9999px;
-    background-color: var(--bg_subtle);
-    color: var(--brand_navy);
+    background-color: var(--brand_primary);
+    color: #ffffff;
     border: 1px solid var(--border_color);
 }
 

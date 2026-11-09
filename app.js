@@ -4,6 +4,8 @@ let lastLocationSent = 0;
 let currentRequiresLocation = false;
 let locationTimer = null;
 let watchId = null;
+let selectedHuntId = "";
+let availableHunts = [];
 
 const startButton = document.getElementById("startButton");
 const game = document.getElementById("game");
@@ -13,6 +15,7 @@ const answerInput = document.getElementById("answer");
 const message = document.getElementById("message");
 const score = document.getElementById("score");
 const startScreen = document.getElementById("start_screen");
+const huntList = document.getElementById("huntList");
 const skipButton = document.getElementById("skipButton");
 const choices = document.getElementById("choices");
 const answerSubmit = answerForm.querySelector('button[type="submit"]');

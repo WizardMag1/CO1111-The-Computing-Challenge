@@ -70,6 +70,7 @@ async function startGame() {
       startScreen.hidden = true;
       message.textContent = "";
 
+
       await getQuestion(session);
     } else {
       message.textContent =
@@ -130,6 +131,7 @@ async function sendAnswer(session, answer) {
     return;
   }
   if (data.correct) {
+    message.textContent = '';
     if (data.completed) {
       await showFinalScore(session);
       return;
@@ -143,12 +145,16 @@ async function sendAnswer(session, answer) {
 
 async function showFinalScore(session) {
   const params = new URLSearchParams({ session });
-  const response = await fetch(`https://codecyprus.org/th/api/score?${params}`);
+  const response = await fetch(`https://codecyprus.org/th/api/leaderboard?${params}&sorted&limit=10`);
   const data = await response.json();
+  const players = data.leaderboard || [];
 
   if (data.status === "OK") {
     score.textContent = data.score;
-    message.textContent = `Game finished! Your score: ${data.score}`;
+    body.innerHTML = `Final Score: ${data.score}\nLeaderboard:\n`;
+    players.forEach((player, index) => {
+      body.innerHTML += `<p>${index + 1}. ${player.player} - ${player.score} - ${player.completionTIme.toLocaleDateString()}</p>`;
+    });
   }
   game.hidden = true;
   startButton.disabled = false;
@@ -165,6 +171,9 @@ async function skipQuestion(session) {
   }
 
   message.textContent = data.message || "Question skipped";
+  setTimeout(() => {
+    message.textContent = "";
+  }, 1500);
 
   if (data.completed) {
     await showFinalScore(session);
@@ -241,7 +250,7 @@ function renderAnswerControls(questionType) {
   answerInput.value = "";
 
   if (questionType === "BOOLEAN") {
-    showChoices(["true", "false"]);
+    showChoices(["True", "False"]);
   } else if (questionType === "MCQ") {
     showChoices(["A", "B", "C", "D"]);
   } else {
@@ -260,7 +269,7 @@ function showChoices(options) {
   options.forEach((option) => {
     const button = document.createElement("button");
     button.type = "button";
-    button.className = "btn_secondary";
+    button.className = "btn_primary";
     button.textContent = option;
     button.addEventListener("click", () => sendAnswer(session, option));
     choices.appendChild(button);

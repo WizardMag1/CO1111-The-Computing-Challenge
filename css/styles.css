@@ -539,10 +539,10 @@ code {
 }
 
 .feedback_banner {
+    color: var(--brand_primary);
     text-align: center;
     font-weight: 600;
     font-size: 0.95rem;
-    color: var(--text_muted);
     min-height: 1.5rem;
 }
 

@@ -19,6 +19,7 @@ const huntList = document.getElementById("huntList");
 const skipButton = document.getElementById("skipButton");
 const choices = document.getElementById("choices");
 const answerSubmit = answerForm.querySelector('button[type="submit"]');
+const leaderboard = document.getElementById("leaderboard");
 
 document
   .getElementById("startForm")
@@ -70,7 +71,6 @@ async function startGame() {
       startScreen.hidden = true;
       message.textContent = "";
 
-
       await getQuestion(session);
     } else {
       message.textContent =
@@ -104,6 +104,9 @@ async function getQuestion(session) {
   currentRequiresLocation = data.requiresLocation;
   questionElement.innerHTML = data.questionText;
   game.hidden = false;
+  if (!answerInput.hidden) {
+    answerInput.focus();
+  }
   skipButton.hidden = !data.canBeSkipped;
 }
 
@@ -131,7 +134,7 @@ async function sendAnswer(session, answer) {
     return;
   }
   if (data.correct) {
-    message.textContent = '';
+    message.textContent = "";
     if (data.completed) {
       await showFinalScore(session);
       return;
@@ -144,18 +147,30 @@ async function sendAnswer(session, answer) {
 }
 
 async function showFinalScore(session) {
+  stopLocationTracking();
   const params = new URLSearchParams({ session });
-  const response = await fetch(`https://codecyprus.org/th/api/leaderboard?${params}&sorted&limit=10`);
+  const response = await fetch(
+    `https://codecyprus.org/th/api/leaderboard?${params}&sorted&limit=10`,
+  );
   const data = await response.json();
   const players = data.leaderboard || [];
 
   if (data.status === "OK") {
-    score.textContent = data.score;
-    body.innerHTML = `Final Score: ${data.score}\nLeaderboard:\n`;
+    await updateScore(session);
+    leaderboard.textContent = `Your final score: ${score.textContent}\n`;
     players.forEach((player, index) => {
-      body.innerHTML += `<p>${index + 1}. ${player.player} - ${player.score} - ${player.completionTIme.toLocaleDateString()}</p>`;
+      const row = document.createElement("p");
+      const date = player.completionTime
+        ? new Date(player.completionTime).toLocaleDateString()
+        : "N/A";
+      row.textContent = `${index + 1}. ${player.player} - ${player.score} - ${date}`;
+      leaderboard.appendChild(row);
     });
+  } else {
+    message.textContent =
+      data.errorMessages?.[0] || "Could not fetch leaderboard";
   }
+  leaderboard.hidden = false;
   game.hidden = true;
   startButton.disabled = false;
 }
@@ -275,3 +290,5 @@ function showChoices(options) {
     choices.appendChild(button);
   });
 }
+
+nameInput.focus();

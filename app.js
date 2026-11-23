@@ -179,7 +179,8 @@ async function showFinalScore(session) {
       const date = player.completionTime
         ? new Date(player.completionTime).toLocaleDateString()
         : "N/A";
-      row.textContent = `${index + 1}. ${player.player} - ${player.score} - ${date}`;
+      const cleanName = (name) => (name || "").replace(/[^\p{L}\p{N} ]/gu, "").trim();
+      row.textContent = `${index + 1}. ${cleanName(player.player)} - ${player.score} - ${date}`;
       leaderboard.appendChild(row);
     });
   } else {

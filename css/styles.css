@@ -730,7 +730,141 @@ td strong {
     box-shadow: var(--shadow_md);
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 1rem;
+}
+
+.leaderboard_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border_color);
+}
+
+.leaderboard_title {
+    margin: 0;
+    font-size: 1.35rem;
+}
+
+.leaderboard_subtitle {
+    margin: 0.15rem 0 0;
+    font-size: 0.875rem;
+    color: var(--text_muted);
+}
+
+.final_score_badge {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    background: color-mix(in srgb, var(--primary, #2563eb) 10%, transparent);
+    border: 1px solid color-mix(in srgb, var(--primary, #2563eb) 25%, transparent);
+    border-radius: var(--radius_md);
+    padding: 0.5rem 0.9rem;
+}
+
+.final_score_label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text_muted);
+}
+
+.final_score_value {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--primary, #2563eb);
+}
+
+.leaderboard_table_wrap {
+    overflow-x: auto;
+}
+
+.leaderboard_table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.leaderboard_table th,
+.leaderboard_table td {
+    padding: 0.65rem 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border_color);
+}
+
+.leaderboard_table th.num,
+.leaderboard_table td.num {
+    text-align: right;
+}
+
+.leaderboard_table th {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: 600;
+    color: var(--text_muted);
+}
+
+.leaderboard_table tbody tr:hover {
+    background-color: color-mix(in srgb, var(--text_main) 4%, transparent);
+}
+
+.leaderboard_table tbody tr.rank_1 {
+    background-color: rgba(234, 179, 8, 0.08);
+}
+
+.leaderboard_table tbody tr.rank_2 {
+    background-color: rgba(148, 163, 184, 0.08);
+}
+
+.leaderboard_table tbody tr.rank_3 {
+    background-color: rgba(217, 119, 6, 0.08);
+}
+
+.leaderboard_table tbody tr.is_current_player {
+    outline: 1px solid var(--primary, #2563eb);
+    background-color: color-mix(in srgb, var(--primary, #2563eb) 8%, transparent);
+    font-weight: 600;
+}
+
+.rank_cell {
+    font-weight: 600;
+    width: 3.25rem;
+}
+
+.score_pill {
+    display: inline-block;
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--text_main) 8%, transparent);
+    font-weight: 700;
+}
+
+.date_cell {
+    color: var(--text_muted);
+    font-size: 0.875rem;
+}
+
+.leaderboard_empty {
+    color: var(--text_muted);
+    text-align: center;
+    padding: 1rem 0;
+}
+
+.qr_video {
+    width: 100%;
+    max-height: 280px;
+    border-radius: var(--radius_md);
+    background: #111;
+    object-fit: cover;
+}
+
+.qr_controls {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 /* Responsive */

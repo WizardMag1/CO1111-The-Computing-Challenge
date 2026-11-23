@@ -20,6 +20,12 @@ const skipButton = document.getElementById("skipButton");
 const choices = document.getElementById("choices");
 const answerSubmit = answerForm.querySelector('button[type="submit"]');
 const leaderboard = document.getElementById("leaderboard");
+const qrSection = document.getElementById("qr_section");
+const qrPreview = document.getElementById("qrPreview");
+const qrResult = document.getElementById("qrResult");
+const startQrBtn = document.getElementById("startQrBtn");
+const stopQrBtn = document.getElementById("stopQrBtn");
+let qrScanner = null;
 
 document
   .getElementById("startForm")
@@ -157,22 +163,117 @@ async function showFinalScore(session) {
 
   if (data.status === "OK") {
     await updateScore(session);
-    leaderboard.textContent = `Your final score: ${score.textContent}\n`;
-    players.forEach((player, index) => {
-      const row = document.createElement("p");
-      const date = player.completionTime
-        ? new Date(player.completionTime).toLocaleDateString()
-        : "N/A";
-      row.textContent = `${index + 1}. ${player.player} - ${player.score} - ${date}`;
-      leaderboard.appendChild(row);
-    });
+    leaderboard.innerHTML = "";
+
+    const header = document.createElement("div");
+    header.className = "leaderboard_header";
+    header.innerHTML = `
+      <div>
+        <h2 class="leaderboard_title">🏆 Leaderboard</h2>
+        <p class="leaderboard_subtitle">Top 10 Players</p>
+      </div>
+      <div class="final_score_badge">
+        <span class="final_score_label">Your Final Score</span>
+        <span class="final_score_value">${score.textContent}</span>
+      </div>
+    `;
+    leaderboard.appendChild(header);
+
+    if (players.length === 0) {
+      const empty = document.createElement("p");
+      empty.className = "leaderboard_empty";
+      empty.textContent = "No scores recorded yet.";
+      leaderboard.appendChild(empty);
+    } else {
+      const tableWrap = document.createElement("div");
+      tableWrap.className = "leaderboard_table_wrap";
+
+      const table = document.createElement("table");
+      table.className = "leaderboard_table";
+      table.innerHTML = `
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Player</th>
+            <th class="num">Score</th>
+            <th class="num">Date</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      `;
+      const tbody = table.querySelector("tbody");
+      const currentPlayerName = document.getElementById("name")?.value.trim().toLowerCase();
+
+      players.forEach((player, index) => {
+        const tr = document.createElement("tr");
+        const rank = index + 1;
+        if (rank <= 3) tr.classList.add(`rank_${rank}`);
+        if (currentPlayerName && player.player?.toLowerCase() === currentPlayerName) {
+          tr.classList.add("is_current_player");
+        }
+
+        const rankBadge =
+          rank === 1 ? "🥇" : rank === 2 ? "🥈" : rank === 3 ? "🥉" : `#${rank}`;
+        const date = player.completionTime
+          ? new Date(player.completionTime).toLocaleDateString()
+          : "N/A";
+        tr.innerHTML = `
+          <td class="rank_cell">${rankBadge}</td>
+          <td class="player_cell">${player.player}</td>
+          <td class="num"><span class="score_pill">${player.score}</span></td>
+          <td class="num date_cell">${date}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      tableWrap.appendChild(table);
+      leaderboard.appendChild(tableWrap);
+    }
   } else {
     message.textContent =
       data.errorMessages?.[0] || "Could not fetch leaderboard";
   }
   leaderboard.hidden = false;
+  qrSection.hidden = false;
   game.hidden = true;
   startButton.disabled = false;
+}
+
+startQrBtn.addEventListener("click", startQrScanner);
+stopQrBtn.addEventListener("click", stopQrScanner);
+
+async function startQrScanner() {
+  if (typeof Instascan === "undefined") {
+    qrResult.textContent = "QR scanner library failed to load.";
+    return;
+  }
+  try {
+    qrScanner = new Instascan.Scanner({ video: qrPreview, mirror: false });
+    qrScanner.addListener("scan", (content) => {
+      qrResult.textContent = `Scanned QR: ${content}`;
+      stopQrScanner();
+    });
+    const cameras = await Instascan.Camera.getCameras();
+    if (cameras.length > 0) {
+      const backCam = cameras.find((c) => /back|rear|environment/i.test(c.name));
+      await qrScanner.start(backCam || cameras[0]);
+      startQrBtn.hidden = true;
+      stopQrBtn.hidden = false;
+      qrResult.textContent = "Camera active — point at a QR code.";
+    } else {
+      qrResult.textContent = "No camera found on this device.";
+    }
+  } catch (err) {
+    qrResult.textContent = `Camera error: ${err.message || err}`;
+  }
+}
+
+function stopQrScanner() {
+  if (qrScanner) {
+    qrScanner.stop();
+  }
+  startQrBtn.hidden = false;
+  stopQrBtn.hidden = true;
 }
 
 async function skipQuestion(session) {

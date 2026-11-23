@@ -15,7 +15,7 @@ const answerInput = document.getElementById("answer");
 const message = document.getElementById("message");
 const score = document.getElementById("score");
 const startScreen = document.getElementById("start_screen");
-const huntList = document.getElementById("huntList");
+const huntSelect = document.getElementById("huntSelect");
 const skipButton = document.getElementById("skipButton");
 const choices = document.getElementById("choices");
 const answerSubmit = answerForm.querySelector('button[type="submit"]');
@@ -48,22 +48,25 @@ answerForm.addEventListener("submit", async (event) => {
   answerInput.value = "";
 });
 
+huntSelect.addEventListener("change", () => {
+  selectedHuntId = huntSelect.value;
+});
+
 async function startGame() {
+  if (!selectedHuntId) {
+    message.textContent = "Please choose a hunt first";
+    return;
+  }
+
   try {
     const playerNameInput = document.getElementById("nameInput").value.trim();
     message.textContent = "Starting game...";
     startButton.disabled = true;
 
-    const response = await fetch("https://codecyprus.org/th/api/list");
-
-    const data = await response.json();
-    console.log(data);
-
-    const huntId = data.treasureHunts[0].uuid;
     const params = new URLSearchParams({
       player: playerNameInput || "Anonymous" + Math.floor(Math.random() * 1000),
       app: "Code Cyprus Treasure Hunt",
-      "treasure-hunt-id": huntId,
+      "treasure-hunt-id": selectedHuntId,
     });
 
     const res = await fetch(`https://codecyprus.org/th/api/start?${params}`);
@@ -116,6 +119,19 @@ async function getQuestion(session) {
   skipButton.hidden = !data.canBeSkipped;
 }
 
+async function getQuizes() {
+  const res = await fetch("https://codecyprus.org/th/api/list");
+  const { treasureHunts } = await res.json();
+
+  for (const hunt of treasureHunts) {
+    const opt = document.createElement("option");
+    opt.value = hunt.uuid;
+    opt.textContent = hunt.name;
+    huntSelect.appendChild(opt);
+  }
+}
+
+
 async function sendAnswer(session, answer) {
   if (currentRequiresLocation) {
     const sent = await sendLocation(session);
@@ -163,72 +179,15 @@ async function showFinalScore(session) {
 
   if (data.status === "OK") {
     await updateScore(session);
-    leaderboard.innerHTML = "";
-
-    const header = document.createElement("div");
-    header.className = "leaderboard_header";
-    header.innerHTML = `
-      <div>
-        <h2 class="leaderboard_title">🏆 Leaderboard</h2>
-        <p class="leaderboard_subtitle">Top 10 Players</p>
-      </div>
-      <div class="final_score_badge">
-        <span class="final_score_label">Your Final Score</span>
-        <span class="final_score_value">${score.textContent}</span>
-      </div>
-    `;
-    leaderboard.appendChild(header);
-
-    if (players.length === 0) {
-      const empty = document.createElement("p");
-      empty.className = "leaderboard_empty";
-      empty.textContent = "No scores recorded yet.";
-      leaderboard.appendChild(empty);
-    } else {
-      const tableWrap = document.createElement("div");
-      tableWrap.className = "leaderboard_table_wrap";
-
-      const table = document.createElement("table");
-      table.className = "leaderboard_table";
-      table.innerHTML = `
-        <thead>
-          <tr>
-            <th>Rank</th>
-            <th>Player</th>
-            <th class="num">Score</th>
-            <th class="num">Date</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      `;
-      const tbody = table.querySelector("tbody");
-      const currentPlayerName = document.getElementById("name")?.value.trim().toLowerCase();
-
-      players.forEach((player, index) => {
-        const tr = document.createElement("tr");
-        const rank = index + 1;
-        if (rank <= 3) tr.classList.add(`rank_${rank}`);
-        if (currentPlayerName && player.player?.toLowerCase() === currentPlayerName) {
-          tr.classList.add("is_current_player");
-        }
-
-        const rankBadge =
-          rank === 1 ? "🥇" : rank === 2 ? "🥈" : rank === 3 ? "🥉" : `#${rank}`;
-        const date = player.completionTime
-          ? new Date(player.completionTime).toLocaleDateString()
-          : "N/A";
-        tr.innerHTML = `
-          <td class="rank_cell">${rankBadge}</td>
-          <td class="player_cell">${player.player}</td>
-          <td class="num"><span class="score_pill">${player.score}</span></td>
-          <td class="num date_cell">${date}</td>
-        `;
-        tbody.appendChild(tr);
-      });
-
-      tableWrap.appendChild(table);
-      leaderboard.appendChild(tableWrap);
-    }
+    leaderboard.textContent = `Your final score: ${score.textContent}\n`;
+    players.forEach((player, index) => {
+      const row = document.createElement("p");
+      const date = player.completionTime
+        ? new Date(player.completionTime).toLocaleDateString()
+        : "N/A";
+      row.textContent = `${index + 1}. ${player.player} - ${player.score} - ${date}`;
+      leaderboard.appendChild(row);
+    });
   } else {
     message.textContent =
       data.errorMessages?.[0] || "Could not fetch leaderboard";
@@ -393,3 +352,4 @@ function showChoices(options) {
 }
 
 nameInput.focus();
+getQuizes();

@@ -15,7 +15,7 @@ const answerInput = document.getElementById("answer");
 const message = document.getElementById("message");
 const score = document.getElementById("score");
 const startScreen = document.getElementById("start_screen");
-const huntList = document.getElementById("huntList");
+const huntSelect = document.getElementById("huntSelect");
 const skipButton = document.getElementById("skipButton");
 const choices = document.getElementById("choices");
 const answerSubmit = answerForm.querySelector('button[type="submit"]');
@@ -42,22 +42,25 @@ answerForm.addEventListener("submit", async (event) => {
   answerInput.value = "";
 });
 
+huntSelect.addEventListener("change", () => {
+  selectedHuntId = huntSelect.value;
+});
+
 async function startGame() {
+  if (!selectedHuntId) {
+    message.textContent = "Please choose a hunt first";
+    return;
+  }
+
   try {
     const playerNameInput = document.getElementById("nameInput").value.trim();
     message.textContent = "Starting game...";
     startButton.disabled = true;
 
-    const response = await fetch("https://codecyprus.org/th/api/list");
-
-    const data = await response.json();
-    console.log(data);
-
-    const huntId = data.treasureHunts[0].uuid;
     const params = new URLSearchParams({
       player: playerNameInput || "Anonymous" + Math.floor(Math.random() * 1000),
       app: "Code Cyprus Treasure Hunt",
-      "treasure-hunt-id": huntId,
+      "treasure-hunt-id": selectedHuntId,
     });
 
     const res = await fetch(`https://codecyprus.org/th/api/start?${params}`);
@@ -109,6 +112,19 @@ async function getQuestion(session) {
   }
   skipButton.hidden = !data.canBeSkipped;
 }
+
+async function getQuizes() {
+  const res = await fetch("https://codecyprus.org/th/api/list");
+  const { treasureHunts } = await res.json();
+
+  for (const hunt of treasureHunts) {
+    const opt = document.createElement("option");
+    opt.value = hunt.uuid;
+    opt.textContent = hunt.name;
+    huntSelect.appendChild(opt);
+  }
+}
+
 
 async function sendAnswer(session, answer) {
   if (currentRequiresLocation) {
@@ -292,3 +308,4 @@ function showChoices(options) {
 }
 
 nameInput.focus();
+getQuizes();

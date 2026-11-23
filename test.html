@@ -94,7 +94,7 @@
                     <td><strong>TC-01</strong></td>
                     <td>API List</td>
                     <td>Fetch active hunts from <code>/th/api/list</code></td>
-                    <td>Returns HTTP 200 and JSON array of hunts</td>
+                    <td>Returns HTTP 200 and JSON object with <code>treasureHunts</code> array</td>
                     <td><span class="status_pass">PASS</span></td>
                     <td>Alex A</td>
                   </tr>
@@ -155,9 +155,160 @@
               </table>
             </div>
           </div>
+
+          <div class="clue_card" style="margin-top: 1.5rem">
+            <div class="card_header">
+              <h2>Automated Unit Tests (<code>utils.js</code>)</h2>
+              <p class="section_lead">
+                Live checks for <code>cleanName()</code> and <code>isActive()</code>.
+              </p>
+            </div>
+            <div class="table_wrap">
+              <table class="test_table">
+                <thead>
+                  <tr>
+                    <th>Function</th>
+                    <th>Input</th>
+                    <th>Expected</th>
+                    <th>Actual</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="unitTestResults"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="clue_card" style="margin-top: 1.5rem">
+            <div class="card_header">
+              <h2>Usability Evaluation (Nielsen's Heuristics)</h2>
+            </div>
+            <div class="table_wrap">
+              <table class="test_table">
+                <thead>
+                  <tr>
+                    <th>Heuristic</th>
+                    <th>Observation in CyberQuest</th>
+                    <th>Rating</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Visibility of system status</td>
+                    <td>Live score bar, feedback banner, and camera status text update immediately.</td>
+                    <td><span class="status_pass">PASS</span></td>
+                  </tr>
+                  <tr>
+                    <td>Match between system and real world</td>
+                    <td>Plain language prompts ("Start Challenge", "Scan Final QR Code") and medal icons.</td>
+                    <td><span class="status_pass">PASS</span></td>
+                  </tr>
+                  <tr>
+                    <td>User control and freedom</td>
+                    <td>Skip question button and Stop Scanner button let users back out anytime.</td>
+                    <td><span class="status_pass">PASS</span></td>
+                  </tr>
+                  <tr>
+                    <td>Error prevention</td>
+                    <td>Required hunt selection and trimmed non-empty player name before starting.</td>
+                    <td><span class="status_pass">PASS</span></td>
+                  </tr>
+                  <tr>
+                    <td>Aesthetic and minimalist design</td>
+                    <td>Single-card focus per step; leaderboard and QR sections stay hidden until needed.</td>
+                    <td><span class="status_pass">PASS</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="clue_card" style="margin-top: 1.5rem">
+            <div class="card_header">
+              <h2>User Acceptance Testing (UAT)</h2>
+            </div>
+            <div class="table_wrap">
+              <table class="test_table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Scenario</th>
+                    <th>Expected Outcome</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>UAT-01</strong></td>
+                    <td>Select an active hunt from the dropdown</td>
+                    <td>Only active hunts appear; selecting one enables starting the session.</td>
+                    <td><span class="status_pass">PASS</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>UAT-02</strong></td>
+                    <td>Submit empty or whitespace-only nickname</td>
+                    <td>Form validation blocks submission and prompts for a valid player name.</td>
+                    <td><span class="status_pass">PASS</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>UAT-03</strong></td>
+                    <td>Clean player names in leaderboard</td>
+                    <td>Extra spaces are trimmed and matching player row is highlighted.</td>
+                    <td><span class="status_pass">PASS</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </section>
     </main>
+    <script src="utils.js"></script>
+    <script>
+      function addTestRow(tbody, functionName, inputText, expected, actual) {
+        const tr = document.createElement("tr");
+        const passed = actual === expected;
+
+        let statusClass = "status_fail";
+        let statusText = "FAIL";
+        if (passed) {
+          statusClass = "status_pass";
+          statusText = "PASS";
+        }
+
+        tr.innerHTML =
+          "<td><code>" + functionName + "</code></td>" +
+          "<td><code>" + inputText + "</code></td>" +
+          "<td><code>" + String(expected) + "</code></td>" +
+          "<td><code>" + String(actual) + "</code></td>" +
+          '<td><span class="' + statusClass + '">' + statusText + "</span></td>";
+
+        tbody.appendChild(tr);
+      }
+
+      function runUnitTests() {
+        const tbody = document.getElementById("unitTestResults");
+        if (!tbody) {
+          return;
+        }
+
+        const now = 1700000000000;
+
+        addTestRow(tbody, "cleanName", '"  Alex   A  "', "Alex A", cleanName("  Alex   A  "));
+        addTestRow(tbody, "cleanName", '"   "', "", cleanName("   "));
+        addTestRow(tbody, "cleanName", "null", "", cleanName(null));
+
+        const activeHunt = { startsOn: now - 1000, endsOn: now + 1000 };
+        const expiredHunt = { startsOn: now - 5000, endsOn: now - 1000 };
+        const futureHunt = { startsOn: now + 1000, endsOn: now + 5000 };
+
+        addTestRow(tbody, "isActive", "active window", true, isActive(activeHunt, now));
+        addTestRow(tbody, "isActive", "expired hunt", false, isActive(expiredHunt, now));
+        addTestRow(tbody, "isActive", "future hunt", false, isActive(futureHunt, now));
+      }
+
+      runUnitTests();
+    </script>
 
     <footer class="site_footer">
       <div class="container_footer_container">

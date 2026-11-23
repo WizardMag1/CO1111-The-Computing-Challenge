@@ -353,3 +353,7 @@ function showChoices(options) {
 
 nameInput.focus();
 getQuizes();
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js");
+}

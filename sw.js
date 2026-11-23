@@ -1,5 +1,5 @@
 /* CyberQuest Service Worker — Offline Shell Support */
-const CACHE_NAME = 'cyberquest-shell-v1';
+const CACHE_NAME = 'cyberquest-shell-v2';
 const SHELL_ASSETS = [
   './',
   './index.html',

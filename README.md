@@ -10,7 +10,7 @@
 
 | Member | Role | File Ownership & Primary Duties |
 | :--- | :--- | :--- |
-| **Alex A** (`@alex`) | **Developer A** | Owns `app.js` & game logic: API endpoints, question loop, state persistence, unit tests. |
+| **Alex A** (`@Godoflevels`) | **Developer A** | Owns `app.js` & game logic: API endpoints, question loop, state persistence, unit tests. |
 | **WizardMag1** (`@WizardMag1`) | **Developer B** | Owns `app.html`, `index.html`, `css/styles.css`, page markup of `test.html` & `notes.html`, PWA setup & GitHub administration. |
 | **Jaspreet Singh** (`@jaspreetsingh052000-cell`) | **Content & QA** | Owns page content, copywriting, marketing campaigns, social media posts, test documents, and meeting minutes. |
 

@@ -10,7 +10,7 @@
   <link rel="icon" type="image/png" href="assets/icon-192.png" />
   <meta name="theme-color" content="#c8102e" />
   <link rel="stylesheet" href="css/styles.css" />
-  <title>CyberQuest — Play Treasure Hunt | UCLan Cyprus</title>
+  <link rel="stylesheet" hre \\ <title>CyberQuest — Play Treasure Hunt | UCLan Cyprus</title>
 </head>
 
 <body>
@@ -37,18 +37,6 @@
 
   <main class="game_viewport">
     <div id="leaderboard" class="leaderboard" hidden></div>
-    <div id="qr_section" class="clue_card qr_section" hidden>
-      <div class="card_header">
-        <h2>Scan Final QR Code</h2>
-        <p class="section_lead">Point your camera at the campus QR code to complete your hunt.</p>
-      </div>
-      <video id="qrPreview" class="qr_video" playsinline></video>
-      <div class="qr_controls">
-        <button type="button" id="startQrBtn" class="btn_primary btn_block">Start QR Scanner</button>
-        <button type="button" id="stopQrBtn" class="btn_secondary btn_block" hidden>Stop Scanner</button>
-      </div>
-      <p id="qrResult" class="feedback_banner"></p>
-    </div>
     <div class="clue_card" id="start_screen">
       <div class="card_header">
         <h2>Start Treasure Hunt</h2>
@@ -58,9 +46,6 @@
       </div>
       <div id="huntList" class="hunt_list"></div>
       <form id="startForm" class="game_form">
-        <select id="huntSelect" class="answer_input" required>
-          <option value="">Choose a hunt...</option>
-        </select>
         <input type="text" id="nameInput" class="answer_input" placeholder="Your player name..." autocomplete="off"
           required />
         <button id="startButton" type="submit" class="btn_primary btn_block">
@@ -110,7 +95,6 @@
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/gh/schmich/instascan-builds@master/instascan.min.js"></script>
   <script src="app.js"></script>
 </body>
 

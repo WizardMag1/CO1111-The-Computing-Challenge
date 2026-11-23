@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="CyberQuest Leaderboard: see the top 20 players of any treasure hunt." />
+  <meta name="author" content="@WizardMag1;@godoflevels;@jaspreetsingh052000-cell" />
+  <meta name="theme-color" content="#c8102e" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/png" href="assets/icon-192.png" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <title>CyberQuest — Leaderboard | UCLan Cyprus</title>
+</head>
+
+<body>
+  <header class="site_header">
+    <div class="header_container">
+      <div class="site_logo">
+        <a href="index.html" class="logo_link">
+          <img class="logo_badge" src="assets/icon-192.png" alt="CyberQuest Logo" />
+          <span class="logo_text">CyberQuest</span>
+        </a>
+      </div>
+      <nav class="main_nav">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#how_it_works">How to Play</a></li>
+          <li><a href="index.html#team">Team</a></li>
+          <li><a href="leaderboard.html" class="active_link">Leaderboard</a></li>
+          <li><a href="test.html">Testing</a></li>
+          <li><a href="notes.html">Notes</a></li>
+          <li><a href="app.html" class="nav_cta">Play App</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="game_viewport">
+    <div class="clue_card">
+      <div class="card_header">
+        <h2>Leaderboard</h2>
+        <p class="section_lead">Choose a treasure hunt to see its top 20 players.</p>
+      </div>
+      <select id="huntSelect" class="answer_input">
+        <option value="">Choose a hunt...</option>
+      </select>
+    </div>
+
+    <p id="leaderboardMessage" class="feedback_banner"></p>
+    <div id="leaderboard" class="leaderboard" hidden></div>
+  </main>
+
+  <footer class="site_footer">
+    <div class="container_footer_container">
+      <div class="footer_info">
+        <strong>CyberQuest</strong> &mdash; CO1111 The Computing Challenge<br />
+        <span class="footer_subtext">UCLan Cyprus</span>
+      </div>
+      <div class="footer_nav">
+        <a href="index.html">Home</a>
+        <a href="app.html">App</a>
+        <a href="leaderboard.html">Leaderboard</a>
+        <a href="test.html">Testing</a>
+        <a href="notes.html">Notes</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="leaderboard.js"></script>
+</body>
+
+</html>

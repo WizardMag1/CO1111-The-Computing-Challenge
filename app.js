@@ -168,30 +168,161 @@ async function sendAnswer(session, answer) {
   }
 }
 
+function createElement(tag, className, text) {
+  const element = document.createElement(tag);
+
+  if (className) {
+    element.className = className;
+  }
+
+  if (text !== undefined) {
+    element.textContent = text;
+  }
+
+  return element;
+}
+
+async function fetchLeaderboard(session) {
+  const url =
+    "https://codecyprus.org/th/api/leaderboard?session=" +
+    session +
+    "&sorted&limit=20";
+
+  const response = await fetch(url);
+  const data = await response.json();
+
+  return data;
+}
+
+function buildLeaderboardHeader() {
+  const header = createElement("div", "leaderboard_header");
+
+  const titleBox = createElement("div");
+  const title = createElement("h2", "leaderboard_title", "Leaderboard");
+  const subtitle = createElement("p", "leaderboard_subtitle", "Top 20 players");
+  titleBox.appendChild(title);
+  titleBox.appendChild(subtitle);
+
+  const scoreBox = createElement("div", "final_score_badge");
+  const scoreLabel = createElement("span", "final_score_label", "Your final score");
+  const scoreValue = createElement("span", "final_score_value", score.textContent);
+  scoreBox.appendChild(scoreLabel);
+  scoreBox.appendChild(scoreValue);
+
+  header.appendChild(titleBox);
+  header.appendChild(scoreBox);
+
+  return header;
+}
+
+function buildTableHead() {
+  const thead = document.createElement("thead");
+  const row = document.createElement("tr");
+
+  row.appendChild(createElement("th", "", "Rank"));
+  row.appendChild(createElement("th", "", "Player"));
+  row.appendChild(createElement("th", "num", "Score"));
+  row.appendChild(createElement("th", "num", "Date"));
+
+  thead.appendChild(row);
+  return thead;
+}
+
+function formatDate(completionTime) {
+  if (!completionTime) {
+    return "N/A";
+  }
+
+  return new Date(completionTime).toLocaleDateString();
+}
+
+function buildPlayerRow(player, rank, myName) {
+  const row = document.createElement("tr");
+  const playerName = String(player.player).trim();
+
+  if (rank <= 3) {
+    row.classList.add("rank_" + rank);
+  }
+
+  if (playerName.toLowerCase() === myName) {
+    row.classList.add("is_current_player");
+  }
+
+  const rankCell = createElement("td", "rank_cell", rank);
+  const nameCell = createElement("td", "", playerName);
+
+  const scoreCell = createElement("td", "num");
+  const scorePill = createElement("span", "score_pill", player.score);
+  scoreCell.appendChild(scorePill);
+
+  const dateCell = createElement("td", "num date_cell", formatDate(player.completionTime));
+
+  row.appendChild(rankCell);
+  row.appendChild(nameCell);
+  row.appendChild(scoreCell);
+  row.appendChild(dateCell);
+
+  return row;
+}
+
+function buildLeaderboardTable(players) {
+  const wrapper = createElement("div", "leaderboard_table_wrap");
+  const table = createElement("table", "leaderboard_table");
+  const tbody = document.createElement("tbody");
+  const myName = nameInput.value.trim().toLowerCase();
+
+  for (let i = 0; i < players.length; i++) {
+    const rank = i + 1;
+    const row = buildPlayerRow(players[i], rank, myName);
+    tbody.appendChild(row);
+  }
+
+  table.appendChild(buildTableHead());
+  table.appendChild(tbody);
+  wrapper.appendChild(table);
+
+  return wrapper;
+}
+
+function buildPlayAgainButton() {
+  const button = createElement("button", "btn_primary btn_block", "Play Another Hunt");
+  button.type = "button";
+
+  button.addEventListener("click", function () {
+    leaderboard.hidden = true;
+    qrSection.hidden = true;
+    startScreen.hidden = false;
+  });
+
+  return button;
+}
+
 async function showFinalScore(session) {
   stopLocationTracking();
-  const params = new URLSearchParams({ session });
-  const response = await fetch(
-    `https://codecyprus.org/th/api/leaderboard?${params}&sorted&limit=10`,
-  );
-  const data = await response.json();
-  const players = data.leaderboard || [];
 
-  if (data.status === "OK") {
-    await updateScore(session);
-    leaderboard.textContent = `Your final score: ${score.textContent}\n`;
-    players.forEach((player, index) => {
-      const row = document.createElement("p");
-      const date = player.completionTime
-        ? new Date(player.completionTime).toLocaleDateString()
-        : "N/A";
-      row.textContent = `${index + 1}. ${player.player} - ${player.score} - ${date}`;
-      leaderboard.appendChild(row);
-    });
-  } else {
-    message.textContent =
-      data.errorMessages?.[0] || "Could not fetch leaderboard";
+  const data = await fetchLeaderboard(session);
+
+  if (data.status !== "OK") {
+    message.textContent = "Could not fetch leaderboard";
+    return;
   }
+
+  const players = data.leaderboard || [];
+  await updateScore(session);
+
+  leaderboard.innerHTML = "";
+  leaderboard.appendChild(buildLeaderboardHeader());
+
+  if (players.length === 0) {
+    leaderboard.appendChild(
+      createElement("p", "leaderboard_empty", "No scores recorded yet."),
+    );
+  } else {
+    leaderboard.appendChild(buildLeaderboardTable(players));
+  }
+
+  leaderboard.appendChild(buildPlayAgainButton());
+
   leaderboard.hidden = false;
   qrSection.hidden = false;
   game.hidden = true;
